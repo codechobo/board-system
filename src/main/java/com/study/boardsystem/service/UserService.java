@@ -25,6 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    // TODO select문 2번 실행 문제
     @Transactional
     public Long join(UserSaveRequestDto userSaveRequestDto) {
         if (userRepository.existsByNickname(userSaveRequestDto.getNickname())) {
