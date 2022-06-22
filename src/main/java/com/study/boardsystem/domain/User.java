@@ -21,18 +21,20 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Column(nullable = false, length = 20)
     private String nickName;
 
     // TODO 패스워드 인코딩 해야함
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String password;
 
     private String city;
@@ -48,5 +50,9 @@ public class User {
 
     private boolean isJoin;
 
+    public void createCheckJoinAndCreateDateTime(LocalDateTime createDateTime, boolean isJoin) {
+        this.createDateTime = createDateTime;
+        this.isJoin = isJoin;
+    }
 
 }
