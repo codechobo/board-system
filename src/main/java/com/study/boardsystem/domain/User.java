@@ -42,9 +42,9 @@ public class User {
     private String address2;
 
     @CreationTimestamp
-    private LocalDateTime createTimeDate;
+    private LocalDateTime createDateTime;
 
-    private LocalDateTime updateTimeDate;
+    private LocalDateTime updateDateTime;
 
     private boolean isJoin;
 

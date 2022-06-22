@@ -1,8 +1,10 @@
 package com.study.boardsystem.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.study.boardsystem.domain
@@ -31,5 +33,9 @@ public class Post {
     @Lob
     private String description;
 
+    @CreationTimestamp
+    private LocalDateTime createDateTime;
+
+    private LocalDateTime updateDateTime;
 
 }
