@@ -29,10 +29,16 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         UserSaveRequestDto userSaveRequestDto = (UserSaveRequestDto) target;
 
-        boolean isExistsNickName = userRepository.existsByNickName(userSaveRequestDto.getNickName());
+        boolean isExistsNickName = userRepository.existsByNickname(userSaveRequestDto.getNickname());
+        boolean isExistEmail = userRepository.existsByEmail(userSaveRequestDto.getEmail());
 
         if (isExistsNickName) {
-            errors.rejectValue("nickName", "wrong.value", "입력하신 닉네임을 사용할 수 없습니다.");
+            errors.rejectValue("nickname", "wrong.nickname", "입력하신 닉네임을 사용할 수 없습니다.");
         }
+
+        if (isExistEmail) {
+            errors.rejectValue("email", "wrong.email", "입력하신 이메일을 사용할 수 없습니다.");
+        }
+
     }
 }

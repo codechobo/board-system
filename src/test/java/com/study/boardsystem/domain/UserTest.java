@@ -24,7 +24,7 @@ class UserTest {
 
         User user = new User();
         user.setName(name);
-        user.setNickName(nickName);
+        user.setNickname(nickName);
         user.setPassword(password);
         user.setJoin(true);
 

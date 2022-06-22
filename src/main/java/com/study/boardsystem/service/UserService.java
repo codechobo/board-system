@@ -3,6 +3,7 @@ package com.study.boardsystem.service;
 import com.study.boardsystem.domain.User;
 import com.study.boardsystem.domain.UserRepository;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.web.dto.UserSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,12 @@ public class UserService {
 
     @Transactional
     public Long join(UserSaveRequestDto userSaveRequestDto) {
-        if (userRepository.existsByNickName(userSaveRequestDto.getNickName())) {
+        if (userRepository.existsByNickname(userSaveRequestDto.getNickname())) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
+
+        if (userRepository.existsByNickname(userSaveRequestDto.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         User user = modelMapper.map(userSaveRequestDto, User.class);
@@ -37,5 +42,9 @@ public class UserService {
         return user.getId();
     }
 
-
+    public UserSaveResponseDto findUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 회원입니다."));
+        return modelMapper.map(user, UserSaveResponseDto.class);
+    }
 }

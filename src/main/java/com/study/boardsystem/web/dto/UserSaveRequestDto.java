@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -24,8 +25,12 @@ public class UserSaveRequestDto {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9_-]{2,20}$")
     private String name;
 
+    @Email
     @NotNull
-    private String nickName;
+    private String email;
+
+    @NotNull
+    private String nickname;
 
     @NotNull
     @Length(min = 8, max = 20, message = "8자 ~ 20자 사이의 비밀번호")

@@ -18,7 +18,9 @@ public class UserSaveResponseDto {
 
     private String name;
 
-    private String nickName;
+    private String email;
+
+    private String nickname;
 
     private String city;
 

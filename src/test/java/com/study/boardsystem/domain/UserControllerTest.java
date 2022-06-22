@@ -2,6 +2,7 @@ package com.study.boardsystem.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,18 +42,24 @@ class UserControllerTest {
     @Autowired
     ModelMapper modelMapper;
 
+    @AfterEach
+    public void afterEach() {
+        userRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("회원가입 성공")
     void createUser_success() throws Exception {
         UserSaveRequestDto userSaveRequestDto = createUserRequestDto();
 
         mockMvc.perform(post("/users")
-                        .content(objectMapper.writeValueAsString(userSaveRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userSaveRequestDto))
                         .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isCreated());
 
-        User user = userRepository.findByNickName(userSaveRequestDto.getNickName())
+        User user = userRepository.findByNickname(userSaveRequestDto.getNickname())
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
 
         assertNotNull(user);
@@ -75,8 +83,12 @@ class UserControllerTest {
     private UserSaveRequestDto createUserRequestDto() {
         UserSaveRequestDto userSaveRequestDto = new UserSaveRequestDto();
         userSaveRequestDto.setName("lee");
+        userSaveRequestDto.setNickname("packman");
+        userSaveRequestDto.setEmail("packman@naver.com");
         userSaveRequestDto.setPassword("hello1234");
-        userSaveRequestDto.setNickName("packman");
+        userSaveRequestDto.setCity("서울");
+        userSaveRequestDto.setAddress1("어디?");
+        userSaveRequestDto.setAddress2("여기");
         return userSaveRequestDto;
     }
 

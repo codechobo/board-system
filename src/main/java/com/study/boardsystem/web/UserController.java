@@ -3,6 +3,7 @@ package com.study.boardsystem.web;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
 import com.study.boardsystem.service.UserService;
 import com.study.boardsystem.domain.validator.UserValidator;
+import com.study.boardsystem.web.dto.UserSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,12 @@ public class UserController {
     public ResponseEntity<Long> createUser(@RequestBody @Valid UserSaveRequestDto userSaveRequestDto) {
         Long joinId = userService.join(userSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(joinId);
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserSaveResponseDto> getUser(@PathVariable("id") Long userId) {
+        UserSaveResponseDto userSaveResponseDto = userService.findUser(userId);
+        return ResponseEntity.ok().body(userSaveResponseDto);
     }
 
 }

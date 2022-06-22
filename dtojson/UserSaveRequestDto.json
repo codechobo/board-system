@@ -1,6 +1,7 @@
 {
   "name" : "lee",
-  "nickName" : "packman",
+  "email" : "packman@naver.com",
+  "nickname" : "packman",
   "password" : "hello123",
   "city" : "서울",
   "address1" : "여의도",
