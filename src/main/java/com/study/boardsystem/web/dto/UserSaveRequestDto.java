@@ -1,4 +1,4 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.web.dto;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
