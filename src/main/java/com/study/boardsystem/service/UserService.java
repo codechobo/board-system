@@ -25,11 +25,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-
+    // TODO select문 2번 실행 문제
     @Transactional
     public Long join(UserSaveRequestDto userSaveRequestDto) {
-        if (userRepository.existsByNicknameOrEmail(userSaveRequestDto.getNickname(), userSaveRequestDto.getEmail())) {
-            throw new IllegalArgumentException("이미 존재하는 정보입니다,");
+        if (userRepository.existsByNickname(userSaveRequestDto.getNickname())) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
+
+        if (userRepository.existsByNickname(userSaveRequestDto.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         User user = modelMapper.map(userSaveRequestDto, User.class);
