@@ -1,7 +1,10 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.boardsystem.domain.User;
+import com.study.boardsystem.domain.UserRepository;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.web.dto.UserSaveResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -27,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 class UserControllerTest {
 
@@ -78,6 +84,21 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
 
+    }
+
+    @Test
+    @DisplayName("회원 조회하기")
+    void getUser() throws Exception {
+        UserSaveRequestDto userRequestDto = createUserRequestDto();
+        User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
+
+        UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
+        Long id = 1L;
+        mockMvc.perform(get("/users/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().json(objectMapper.writeValueAsString(userSaveResponseDto)));
     }
 
     private UserSaveRequestDto createUserRequestDto() {
