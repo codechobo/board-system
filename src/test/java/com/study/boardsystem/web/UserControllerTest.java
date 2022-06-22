@@ -5,6 +5,7 @@ import com.study.boardsystem.domain.User;
 import com.study.boardsystem.domain.UserRepository;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
 import com.study.boardsystem.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.web.dto.UserUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -112,9 +112,44 @@ class UserControllerTest {
         String dto = objectMapper.writeValueAsString(userSaveResponseDto);
 
         mockMvc.perform(get("/users")
-                .param("nicknameOrEmail", userRequestDto.getEmail()))
+                        .param("nicknameOrEmail", userRequestDto.getEmail()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(dto));
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    void updateUser() throws Exception {
+        UserUpdateRequestDto userUpdateRequestDto = createUserUpdateRequestDto();
+
+        UserSaveRequestDto userRequestDto = createUserRequestDto();
+        User saveUser = userRepository.save(modelMapper.map(userRequestDto, User.class));
+
+        String updateDto = objectMapper.writeValueAsString(userUpdateRequestDto);
+        mockMvc.perform(put("/users/" + saveUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateDto)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        User findUser = userRepository.findById(saveUser.getId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 회원입니다."));
+
+        assertNotNull(findUser);
+        assertThat(findUser.getNickname()).isEqualTo(userUpdateRequestDto.getNickname());
+        assertThat(findUser.getEmail()).isEqualTo(userUpdateRequestDto.getEmail());
+    }
+
+    private UserUpdateRequestDto createUserUpdateRequestDto() {
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto();
+        userUpdateRequestDto.setNickname("pack");
+        userUpdateRequestDto.setEmail("pack@naver.com");
+        userUpdateRequestDto.setCity("서울");
+        userUpdateRequestDto.setAddress1("어딘가");
+        userUpdateRequestDto.setAddress2("단지");
+        return userUpdateRequestDto;
     }
 
     private UserSaveRequestDto createUserRequestDto() {

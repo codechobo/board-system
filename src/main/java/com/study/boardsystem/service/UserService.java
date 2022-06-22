@@ -4,6 +4,7 @@ import com.study.boardsystem.domain.User;
 import com.study.boardsystem.domain.UserRepository;
 import com.study.boardsystem.web.dto.UserSaveRequestDto;
 import com.study.boardsystem.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.web.dto.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -43,9 +44,20 @@ public class UserService {
     }
 
     public UserSaveResponseDto findUser(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 회원입니다."));
+        User user = findUsersById(id);
         return modelMapper.map(user, UserSaveResponseDto.class);
+    }
+
+    @Transactional
+    public Long updateUserInfo(Long userId, UserUpdateRequestDto userUpdateRequestDto) {
+        User user = findUsersById(userId);
+        modelMapper.map(userUpdateRequestDto, user);
+        return user.getId();
+    }
+
+    private User findUsersById(Long id) {
+        return userRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 회원입니다."));
     }
 
     public UserSaveResponseDto findUserEmail(String email) {
@@ -58,4 +70,5 @@ public class UserService {
 
         return modelMapper.map(user, UserSaveResponseDto.class);
     }
+
 }

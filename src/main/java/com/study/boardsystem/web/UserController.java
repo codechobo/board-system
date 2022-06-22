@@ -4,6 +4,7 @@ import com.study.boardsystem.web.dto.UserSaveRequestDto;
 import com.study.boardsystem.service.UserService;
 import com.study.boardsystem.domain.validator.UserValidator;
 import com.study.boardsystem.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.web.dto.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,13 @@ public class UserController {
     public ResponseEntity<UserSaveResponseDto> getUser(@RequestParam String nicknameOrEmail) {
         UserSaveResponseDto userSaveResponseDto = userService.findUserEmail(nicknameOrEmail);
         return ResponseEntity.ok().body(userSaveResponseDto);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<Long> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        Long id = userService.updateUserInfo(userId, userUpdateRequestDto);
+        return ResponseEntity.ok().body(id);
     }
 
 }
