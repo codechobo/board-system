@@ -43,4 +43,10 @@ public class UserController {
         return ResponseEntity.ok().body(userSaveResponseDto);
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<UserSaveResponseDto> getUser(@RequestParam String nicknameOrEmail) {
+        UserSaveResponseDto userSaveResponseDto = userService.findUserEmail(nicknameOrEmail);
+        return ResponseEntity.ok().body(userSaveResponseDto);
+    }
+
 }

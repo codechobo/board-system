@@ -88,17 +88,33 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원 조회하기")
-    void getUser() throws Exception {
+    void getUser_with_id() throws Exception {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
         User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
 
         UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
         Long id = 1L;
         mockMvc.perform(get("/users/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(userSaveResponseDto)));
+    }
+
+    @Test
+    @DisplayName("이메일로 회원 조회하기")
+    void getUser_with_nickname_email() throws Exception {
+        UserSaveRequestDto userRequestDto = createUserRequestDto();
+        User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
+        UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
+
+        String dto = objectMapper.writeValueAsString(userSaveResponseDto);
+
+        mockMvc.perform(get("/users")
+                .param("nicknameOrEmail", userRequestDto.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(dto));
     }
 
     private UserSaveRequestDto createUserRequestDto() {

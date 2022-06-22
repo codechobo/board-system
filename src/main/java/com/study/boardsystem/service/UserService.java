@@ -27,8 +27,12 @@ public class UserService {
 
     @Transactional
     public Long join(UserSaveRequestDto userSaveRequestDto) {
-        if (userRepository.existsByNicknameOrEmail(userSaveRequestDto.getNickname(), userSaveRequestDto.getEmail())) {
-            throw new IllegalArgumentException("이미 존재하는 정보입니다.");
+        if (userRepository.existsByNickname(userSaveRequestDto.getNickname())) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임 정보입니다.");
+        }
+
+        if (userRepository.existsByEmail(userSaveRequestDto.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일 정보입니다.");
         }
 
         User user = modelMapper.map(userSaveRequestDto, User.class);
@@ -41,6 +45,17 @@ public class UserService {
     public UserSaveResponseDto findUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 회원입니다."));
+        return modelMapper.map(user, UserSaveResponseDto.class);
+    }
+
+    public UserSaveResponseDto findUserEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        if (!user.getEmail().equals(email)) {
+            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
+        }
+
         return modelMapper.map(user, UserSaveResponseDto.class);
     }
 }
