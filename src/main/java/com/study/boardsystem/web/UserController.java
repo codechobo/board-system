@@ -21,6 +21,7 @@ import javax.validation.Valid;
  */
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -54,6 +55,12 @@ public class UserController {
     public ResponseEntity<Long> updateUser(@PathVariable("id") Long userId,
                                            @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         Long id = userService.updateUserInfo(userId, userUpdateRequestDto);
+        return ResponseEntity.ok().body(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Long> deleteUser(@PathVariable("id") Long userId) {
+        Long id = userService.deleteUserInfo(userId);
         return ResponseEntity.ok().body(id);
     }
 

@@ -9,6 +9,7 @@ import com.study.boardsystem.web.dto.UserUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * date           : 2022/06/22
  */
 
-@SpringBootTest
 @Transactional
+@SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
 
@@ -58,7 +61,7 @@ class UserControllerTest {
     void createUser_success() throws Exception {
         UserSaveRequestDto userSaveRequestDto = createUserRequestDto();
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userSaveRequestDto))
                         .accept(MediaType.APPLICATION_JSON))
@@ -78,7 +81,7 @@ class UserControllerTest {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
         userRepository.save(modelMapper.map(userRequestDto, User.class));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userRequestDto)))
                 .andDo(print())
@@ -94,7 +97,7 @@ class UserControllerTest {
 
         UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
         Long id = 1L;
-        mockMvc.perform(get("/users/" + id)
+        mockMvc.perform(get("/api/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -111,7 +114,7 @@ class UserControllerTest {
 
         String dto = objectMapper.writeValueAsString(userSaveResponseDto);
 
-        mockMvc.perform(get("/users")
+        mockMvc.perform(get("/api/users")
                         .param("nicknameOrEmail", userRequestDto.getEmail()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(dto));
@@ -126,7 +129,7 @@ class UserControllerTest {
         User saveUser = userRepository.save(modelMapper.map(userRequestDto, User.class));
 
         String updateDto = objectMapper.writeValueAsString(userUpdateRequestDto);
-        mockMvc.perform(put("/users/" + saveUser.getId())
+        mockMvc.perform(put("/api/users/" + saveUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateDto)
                         .accept(MediaType.APPLICATION_JSON))
@@ -141,6 +144,20 @@ class UserControllerTest {
         assertThat(findUser.getNickname()).isEqualTo(userUpdateRequestDto.getNickname());
         assertThat(findUser.getEmail()).isEqualTo(userUpdateRequestDto.getEmail());
     }
+
+    @Test
+    @DisplayName("회원 정보 삭제")
+    void deleteUser() throws Exception {
+        UserSaveRequestDto userRequestDto = createUserRequestDto();
+        User saveUser = userRepository.save(modelMapper.map(userRequestDto, User.class));
+
+        mockMvc.perform(delete("/api/users/" + saveUser.getId()))
+                .andExpect(status().isOk());
+
+        assertThatThrownBy(() -> userRepository.findById(saveUser.getId()).get())
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
 
     private UserUpdateRequestDto createUserUpdateRequestDto() {
         UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto();

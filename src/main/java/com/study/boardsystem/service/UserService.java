@@ -71,4 +71,10 @@ public class UserService {
         return modelMapper.map(user, UserSaveResponseDto.class);
     }
 
+    @Transactional
+    public Long deleteUserInfo(Long userId) {
+        User findUser = findUsersById(userId);
+        userRepository.delete(findUser);
+        return userId;
+    }
 }
