@@ -1,10 +1,10 @@
-package com.study.boardsystem.service;
+package com.study.boardsystem.module.user.service;
 
-import com.study.boardsystem.domain.User;
-import com.study.boardsystem.domain.UserRepository;
-import com.study.boardsystem.web.dto.UserSaveRequestDto;
-import com.study.boardsystem.web.dto.UserSaveResponseDto;
-import com.study.boardsystem.web.dto.UserUpdateRequestDto;
+import com.study.boardsystem.module.user.domain.User;
+import com.study.boardsystem.module.user.domain.UserRepository;
+import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.module.user.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.module.user.web.dto.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

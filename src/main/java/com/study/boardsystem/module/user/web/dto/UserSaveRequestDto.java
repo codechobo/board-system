@@ -1,15 +1,12 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.user.web.dto;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
 
 /**
  * packageName    : com.study.boardsystem.domain

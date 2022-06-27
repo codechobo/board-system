@@ -1,10 +1,6 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.user.web.dto;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.Column;
-import java.time.LocalDateTime;
 
 /**
  * packageName    : com.study.boardsystem.domain

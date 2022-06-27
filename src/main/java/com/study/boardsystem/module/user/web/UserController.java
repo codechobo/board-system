@@ -1,10 +1,10 @@
-package com.study.boardsystem.web;
+package com.study.boardsystem.module.user.web;
 
-import com.study.boardsystem.web.dto.UserSaveRequestDto;
-import com.study.boardsystem.service.UserService;
-import com.study.boardsystem.domain.validator.UserValidator;
-import com.study.boardsystem.web.dto.UserSaveResponseDto;
-import com.study.boardsystem.web.dto.UserUpdateRequestDto;
+import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.module.user.service.UserService;
+import com.study.boardsystem.module.user.domain.validator.UserValidator;
+import com.study.boardsystem.module.user.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.module.user.web.dto.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

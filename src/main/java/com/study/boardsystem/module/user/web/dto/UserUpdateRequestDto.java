@@ -1,14 +1,13 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.user.web.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * packageName    : com.study.boardsystem.web
+ * packageName    : com.study.boardsystem.module.user.web
  * fileName       : UserUpdateRequestDto
  * author         : tkdwk567@naver.com
  * date           : 2022/06/23

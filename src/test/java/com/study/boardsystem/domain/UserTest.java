@@ -1,5 +1,6 @@
 package com.study.boardsystem.domain;
 
+import com.study.boardsystem.module.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,15 +1,14 @@
-package com.study.boardsystem.web;
+package com.study.boardsystem.module.user.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.boardsystem.domain.User;
-import com.study.boardsystem.domain.UserRepository;
-import com.study.boardsystem.web.dto.UserSaveRequestDto;
-import com.study.boardsystem.web.dto.UserSaveResponseDto;
-import com.study.boardsystem.web.dto.UserUpdateRequestDto;
+import com.study.boardsystem.module.user.domain.User;
+import com.study.boardsystem.module.user.domain.UserRepository;
+import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.module.user.web.dto.UserSaveResponseDto;
+import com.study.boardsystem.module.user.web.dto.UserUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -96,7 +95,8 @@ class UserControllerTest {
         User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
 
         UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
-        Long id = 1L;
+
+        Long id = user.getId();
         mockMvc.perform(get("/api/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

@@ -1,7 +1,7 @@
-package com.study.boardsystem.domain.validator;
+package com.study.boardsystem.module.user.domain.validator;
 
-import com.study.boardsystem.domain.UserRepository;
-import com.study.boardsystem.web.dto.UserSaveRequestDto;
+import com.study.boardsystem.module.user.domain.UserRepository;
+import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

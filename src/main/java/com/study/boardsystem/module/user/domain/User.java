@@ -1,4 +1,4 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.module.user.domain;
 
 import lombok.*;
 import net.bytebuddy.asm.Advice;
