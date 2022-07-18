@@ -23,15 +23,14 @@ class UserTest {
         String nickName = "뚱이";
         String password = "hello1234";
 
-        User user = new User();
-        user.setName(name);
-        user.setNickname(nickName);
-        user.setPassword(password);
-        user.setJoin(true);
+        User user = User.builder()
+                .name(name)
+                .nickname(nickName)
+                .password(password)
+                .build();
 
         assertNotNull(user);
         assertThat(user.getName()).isEqualTo(name);
-        assertThat(user.getPassword()).isEqualTo(password);
     }
 
 
