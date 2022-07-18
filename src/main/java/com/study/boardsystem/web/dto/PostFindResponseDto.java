@@ -1,8 +1,7 @@
 package com.study.boardsystem.web.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * packageName    : com.study.boardsystem.web.dto
@@ -12,11 +11,10 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PostFindResponseDto {
 
-    private String title;
-    private String description;
+    private final String title;
+    private final String description;
 
 }

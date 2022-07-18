@@ -1,5 +1,6 @@
 package com.study.boardsystem.web;
 
+import com.study.boardsystem.domain.PostRepository;
 import com.study.boardsystem.service.PostService;
 import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.study.boardsystem.web
@@ -25,6 +27,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
     @PostMapping("/posts")
     public ResponseEntity<PostSaveResponseDto> createPosts(
@@ -38,6 +41,14 @@ public class PostController {
             @Validated @PathVariable("name") String userName) {
         List<PostFindResponseDto> dtos = postService.findByNamePosts(userName);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    @GetMapping("/posts/list")
+    public ResponseEntity<List<PostSaveResponseDto>> list() {
+        List<PostSaveResponseDto> posts = postRepository.findAll().stream()
+                .map(p -> PostSaveResponseDto.builder().post(p).build())
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
 }
