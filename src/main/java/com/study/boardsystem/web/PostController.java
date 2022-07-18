@@ -1,14 +1,16 @@
 package com.study.boardsystem.web;
 
 import com.study.boardsystem.service.PostService;
+import com.study.boardsystem.web.dto.PostView;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
+import com.study.boardsystem.web.dto.PostSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.web
@@ -24,10 +26,18 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/api/post")
-    public ResponseEntity<Long> createPost(@RequestBody PostSaveRequestDto postSaveRequestDto) {
-        Long id = postService.create(postSaveRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+    @PostMapping("/posts")
+    public ResponseEntity<PostSaveResponseDto> createPosts(
+            @RequestBody PostSaveRequestDto postSaveRequestDto) {
+        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    }
+
+    @GetMapping("/posts/{name}")
+    public ResponseEntity<List<PostView>> getPosts(
+            @Validated @PathVariable("name") String userName) {
+        List<PostView> dtos = postService.findPost(userName);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
 }

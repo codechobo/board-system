@@ -3,6 +3,7 @@ package com.study.boardsystem.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
 @Entity
 public class Post {
@@ -26,7 +27,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "user_name", nullable = false, length = 20)
     private String userName;
 
     @Column(nullable = false, length = 50)
