@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 /**
  * packageName    : com.study.boardsystem.domain
  * fileName       : UserService
@@ -37,7 +35,7 @@ public class UserService {
         }
 
         User user = modelMapper.map(userSaveRequestDto, User.class);
-        user.createCheckJoinAndCreateDateTime(LocalDateTime.now(), true);
+        user.joinCheck(true);
 
         userRepository.save(user);
         return user.getId();
@@ -64,9 +62,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        if (!user.getEmail().equals(email)) {
-            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
-        }
+        user.emailCheck(email);
 
         return modelMapper.map(user, UserSaveResponseDto.class);
     }

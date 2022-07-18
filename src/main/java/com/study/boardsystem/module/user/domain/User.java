@@ -1,14 +1,13 @@
 package com.study.boardsystem.module.user.domain;
 
+import com.study.boardsystem.domain.Post;
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.domain
@@ -21,13 +20,15 @@ import java.util.HashSet;
 @Setter
 @Entity
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "users")
+@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "users_id")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 20)
@@ -49,6 +50,9 @@ public class User {
 
     private String address2;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -56,6 +60,15 @@ public class User {
 
     private boolean isJoin;
 
+
+    // 연관관계 메서드
+    public void addPost(Post post) {
+        this.posts.add(post);
+        post.addUser(this);
+    }
+
+
+    // 업데이트 메서드
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -75,9 +88,14 @@ public class User {
         this.address2 = address2;
     }
 
-    public void createCheckJoinAndCreateDateTime(LocalDateTime createDateTime, boolean isJoin) {
-        this.createDateTime = createDateTime;
+    public void joinCheck(boolean isJoin) {
         this.isJoin = isJoin;
+    }
+
+    public void emailCheck(String email) {
+        if (!this.email.equals(email)) {
+            throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
+        }
     }
 
 }
