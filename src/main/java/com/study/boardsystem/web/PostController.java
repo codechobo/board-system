@@ -51,4 +51,9 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
+    @DeleteMapping("/posts/{id}")
+    public void deletePost(
+            @PathVariable("id") Long postId) {
+        postService.deleteByIdPost(1L);
+    }
 }

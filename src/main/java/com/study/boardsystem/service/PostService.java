@@ -7,6 +7,7 @@ import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +32,13 @@ public class PostService {
 
     public List<PostFindResponseDto> findByNamePosts(String userName) {
         return postRepository.findByName(userName);
+    }
+
+    @Transactional
+    public void deleteByIdPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+
+        postRepository.delete(post);
     }
 }
