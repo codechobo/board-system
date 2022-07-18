@@ -1,6 +1,8 @@
 package com.study.boardsystem.module.user.web.dto;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -15,6 +17,7 @@ import javax.validation.constraints.Pattern;
  * date           : 2022/06/22
  */
 @Data
+@NoArgsConstructor
 public class UserSaveRequestDto {
 
     @NotNull
@@ -42,4 +45,14 @@ public class UserSaveRequestDto {
     @NotBlank
     private String address2;
 
+    @Builder
+    public UserSaveRequestDto(String name, String email, String nickname, String password, String city, String address1, String address2) {
+        this.name = name;
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.city = city;
+        this.address1 = address1;
+        this.address2 = address2;
+    }
 }
