@@ -34,9 +34,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{name}")
-    public ResponseEntity<List<PostFindResponseDto>> getPosts(
+    public ResponseEntity<List<PostFindResponseDto>> searchByName(
             @Validated @PathVariable("name") String userName) {
-        List<PostFindResponseDto> dtos = postService.findPost(userName);
+        List<PostFindResponseDto> dtos = postService.findByNamePosts(userName);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

@@ -29,7 +29,7 @@ public class PostService {
         return PostSaveResponseDto.builder().post(post).build();
     }
 
-    public List<PostFindResponseDto> findPost(String userName) {
+    public List<PostFindResponseDto> findByNamePosts(String userName) {
         return postRepository.findByName(userName);
     }
 }
