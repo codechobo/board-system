@@ -5,6 +5,7 @@ import com.study.boardsystem.service.PostService;
 import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +53,16 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public void deletePost(
-            @PathVariable("id") Long postId) {
+    public void deletePost(@PathVariable("id") Long postId) {
         postService.deleteByIdPost(1L);
+    }
+
+    @PutMapping("/posts/{id}")
+    public ResponseEntity<PostSaveResponseDto> updatePost(
+            @PathVariable("id") Long postId,
+            @Validated @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
+        PostSaveResponseDto postSaveResponseDto =
+                postService.updateByIdPost(postId, postUpdateRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(postSaveResponseDto);
     }
 }

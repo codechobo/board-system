@@ -5,17 +5,20 @@ import com.study.boardsystem.domain.PostRepository;
 import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.PostUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -26,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 @SpringBootTest
+@Transactional
 class PostServiceTest {
 
     @Autowired
@@ -121,5 +125,30 @@ class PostServiceTest {
                 .orElseThrow(() -> new IllegalArgumentException("존재 하지 않는 아이디입니다.")))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재 하지 않는 아이디입니다.");
+    }
+
+    @Test
+    @DisplayName("게시글 업데이트")
+    void updateByIdPost() {
+        // given
+        Post updateBeforeEntity = postRepository.findById(1L).get();
+
+        String updateBeforeTitle = updateBeforeEntity.getTitle();
+        String updateBeforeDescription = updateBeforeEntity.getDescription();
+
+        // when
+        PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
+                .title("스폰지밥")
+                .description("검정고무신 보단 스폰지밥이 더 재밌어!")
+                .build();
+        postService.updateByIdPost(1L, postUpdateRequestDto);
+
+        // then
+        Post updateAfterEntity = postRepository.findById(1L).get();
+
+        assertNotEquals(updateAfterEntity.getTitle(), updateBeforeTitle);
+        assertNotEquals(updateAfterEntity.getDescription(), updateBeforeDescription);
+        assertThat(updateAfterEntity.getTitle()).isEqualTo(postUpdateRequestDto.getTitle());
+        assertThat(updateAfterEntity.getDescription()).isEqualTo(postUpdateRequestDto.getDescription());
     }
 }

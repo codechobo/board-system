@@ -1,10 +1,11 @@
 package com.study.boardsystem.domain;
 
+import com.study.boardsystem.web.dto.PostUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -18,9 +19,9 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Setter
-@NoArgsConstructor
 @Entity
+@DynamicUpdate
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -49,4 +50,8 @@ public class Post {
         this.description = description;
     }
 
+    public void updateEntity(PostUpdateRequestDto postUpdateRequestDto) {
+        this.title = postUpdateRequestDto.getTitle();
+        this.description = postUpdateRequestDto.getDescription();
+    }
 }

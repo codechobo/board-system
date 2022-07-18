@@ -5,6 +5,7 @@ import com.study.boardsystem.domain.PostRepository;
 import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,6 @@ public class PostService {
 
     public PostSaveResponseDto create(PostSaveRequestDto postSaveRequestDto) {
         Post post = postRepository.save(postSaveRequestDto.toEntity());
-
         return PostSaveResponseDto.builder().post(post).build();
     }
 
@@ -36,9 +36,19 @@ public class PostService {
 
     @Transactional
     public void deleteByIdPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
-
+        Post post = getEntity(postId);
         postRepository.delete(post);
+    }
+
+    @Transactional
+    public PostSaveResponseDto updateByIdPost(Long postId, PostUpdateRequestDto postUpdateRequestDto) {
+        Post post = getEntity(postId);
+        post.updateEntity(postUpdateRequestDto);
+        return PostSaveResponseDto.builder().post(post).build();
+    }
+
+    private Post getEntity(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
     }
 }
