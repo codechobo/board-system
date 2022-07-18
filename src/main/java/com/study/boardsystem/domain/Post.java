@@ -1,8 +1,10 @@
 package com.study.boardsystem.domain;
 
-import com.study.boardsystem.module.user.domain.User;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +19,6 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Post {
 
@@ -25,9 +26,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
-    private User user;
+    @Column(nullable = false, length = 20)
+    private String userName;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -38,16 +38,14 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
+    @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-
-    // 연관관계 메서드
-    public void addUser(User user) {
-        if (this.user != null) {
-            this.user.getPosts().remove(this);
-        }
-
-        this.user = user;
-        user.addPost(this);
+    @Builder
+    public Post(String userName, String title, String description) {
+        this.userName = userName;
+        this.title = title;
+        this.description = description;
     }
+
 }

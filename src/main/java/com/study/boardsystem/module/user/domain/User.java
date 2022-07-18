@@ -1,13 +1,11 @@
 package com.study.boardsystem.module.user.domain;
 
-import com.study.boardsystem.domain.Post;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.domain
@@ -44,31 +42,24 @@ public class User {
     @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(length = 20)
     private String city;
 
+    @Column(length = 20)
     private String address1;
 
+    @Column(length = 20)
     private String address2;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
+    @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
+    @Column
     private boolean isJoin;
 
-
-    // 연관관계 메서드
-    public void addPost(Post post) {
-        this.posts.add(post);
-        post.addUser(this);
-    }
-
-
-    // 업데이트 메서드
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
