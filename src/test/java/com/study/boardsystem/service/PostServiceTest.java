@@ -2,7 +2,7 @@ package com.study.boardsystem.service;
 
 import com.study.boardsystem.domain.Post;
 import com.study.boardsystem.domain.PostRepository;
-import com.study.boardsystem.web.dto.PostView;
+import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ class PostServiceTest {
         PostSaveResponseDto dto = postService.create(postSaveRequestDto);
 
         // when
-        List<PostView> result = postRepository.findByName("기철이");
+        List<PostFindResponseDto> result = postRepository.findByName("기철이");
 
         // then
         assertThat(result).isNotNull();

@@ -1,7 +1,7 @@
 package com.study.boardsystem.web;
 
 import com.study.boardsystem.service.PostService;
-import com.study.boardsystem.web.dto.PostView;
+import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +34,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{name}")
-    public ResponseEntity<List<PostView>> getPosts(
+    public ResponseEntity<List<PostFindResponseDto>> getPosts(
             @Validated @PathVariable("name") String userName) {
-        List<PostView> dtos = postService.findPost(userName);
+        List<PostFindResponseDto> dtos = postService.findPost(userName);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

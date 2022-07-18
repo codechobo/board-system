@@ -2,7 +2,7 @@ package com.study.boardsystem.service;
 
 import com.study.boardsystem.domain.Post;
 import com.study.boardsystem.domain.PostRepository;
-import com.study.boardsystem.web.dto.PostView;
+import com.study.boardsystem.web.dto.PostFindResponseDto;
 import com.study.boardsystem.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.PostSaveResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class PostService {
         return PostSaveResponseDto.builder().post(post).build();
     }
 
-    public List<PostView> findPost(String userName) {
+    public List<PostFindResponseDto> findPost(String userName) {
         return postRepository.findByName(userName);
     }
 }

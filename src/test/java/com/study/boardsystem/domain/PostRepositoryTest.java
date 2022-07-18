@@ -1,11 +1,8 @@
 package com.study.boardsystem.domain;
 
-import com.study.boardsystem.web.dto.PostView;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,11 +30,6 @@ class PostRepositoryTest {
         Post save = postRepository.save(post);
 
         assertThat(save.getTitle()).isEqualTo(post.getTitle());
-
-        List<PostView> byName = postRepository.findByName(save.getUserName());
-
-
-
     }
 
 }

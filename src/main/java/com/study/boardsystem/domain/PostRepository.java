@@ -1,6 +1,6 @@
 package com.study.boardsystem.domain;
 
-import com.study.boardsystem.web.dto.PostView;
+import com.study.boardsystem.web.dto.PostFindResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +16,9 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("select p.title as title, p.description as description " +
+    @Query("select new " +
+            "com.study.boardsystem.web.dto.PostFindResponseDto(p.title, p.description) " +
             "from Post p " +
             "where p.userName =:userName")
-    List<PostView> findByName(@Param("userName") String userName);
+    List<PostFindResponseDto> findByName(@Param("userName") String userName);
 }
