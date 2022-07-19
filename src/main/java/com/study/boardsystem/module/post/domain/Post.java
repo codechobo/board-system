@@ -1,16 +1,15 @@
 package com.study.boardsystem.module.post.domain;
 
+import com.study.boardsystem.module.base.BaseTimeEntity;
 import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +23,9 @@ import java.util.List;
 @Getter
 @Entity
 @DynamicUpdate
-@NoArgsConstructor
-public class Post {
+@Table(name = "posts")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,13 +41,7 @@ public class Post {
     private String description;
 
     @OneToMany
-    private List<Comment> comment = new ArrayList<>();
-
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(String userName, String title, String description) {
@@ -59,5 +53,9 @@ public class Post {
     public void updateEntity(PostUpdateRequestDto postUpdateRequestDto) {
         this.title = postUpdateRequestDto.getTitle();
         this.description = postUpdateRequestDto.getDescription();
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }
