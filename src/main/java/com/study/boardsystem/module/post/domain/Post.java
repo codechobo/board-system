@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.post.domain;
 
+import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.module.post.domain
@@ -36,6 +39,9 @@ public class Post {
 
     @Lob
     private String description;
+
+    @OneToMany
+    private List<Comment> comment = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
