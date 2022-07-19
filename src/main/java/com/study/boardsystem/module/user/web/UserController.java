@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : UserController
  * author         : tkdwk567@naver.com
  * date           : 2022/06/22

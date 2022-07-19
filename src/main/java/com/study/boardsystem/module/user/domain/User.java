@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : User
  * author         : tkdwk567@naver.com
  * date           : 2022/06/22

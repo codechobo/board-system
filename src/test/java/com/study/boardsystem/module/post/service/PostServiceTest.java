@@ -1,11 +1,11 @@
-package com.study.boardsystem.service;
+package com.study.boardsystem.module.post.service;
 
-import com.study.boardsystem.domain.Post;
-import com.study.boardsystem.domain.PostRepository;
-import com.study.boardsystem.web.dto.PostFindResponseDto;
-import com.study.boardsystem.web.dto.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.PostSaveResponseDto;
-import com.study.boardsystem.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.post.domain.Post;
+import com.study.boardsystem.module.post.domain.PostRepository;
+import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveRequestDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * packageName    : com.study.boardsystem.service
+ * packageName    : com.study.boardsystem.module.post.service
  * fileName       : PostServiceTest
  * author         : tkdwk567@naver.com
  * date           : 2022/07/18

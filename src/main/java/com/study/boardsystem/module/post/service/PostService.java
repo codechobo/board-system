@@ -1,11 +1,11 @@
-package com.study.boardsystem.service;
+package com.study.boardsystem.module.post.service;
 
-import com.study.boardsystem.domain.Post;
-import com.study.boardsystem.domain.PostRepository;
-import com.study.boardsystem.web.dto.PostFindResponseDto;
-import com.study.boardsystem.web.dto.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.PostSaveResponseDto;
-import com.study.boardsystem.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.post.domain.Post;
+import com.study.boardsystem.module.post.domain.PostRepository;
+import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveRequestDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * packageName    : com.study.boardsystem.service
+ * packageName    : com.study.boardsystem.module.post.service
  * fileName       : PostService
  * author         : tkdwk567@naver.com
  * date           : 2022/06/28

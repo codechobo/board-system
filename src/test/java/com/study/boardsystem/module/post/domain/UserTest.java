@@ -1,4 +1,4 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.module.post.domain;
 
 import com.study.boardsystem.module.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : UserTest
  * author         : tkdwk567@naver.com
  * date           : 2022/06/22

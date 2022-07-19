@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : UserService
  * author         : tkdwk567@naver.com
  * date           : 2022/06/22

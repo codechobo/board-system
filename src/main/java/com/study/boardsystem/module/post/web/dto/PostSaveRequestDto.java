@@ -1,7 +1,7 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.post.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.study.boardsystem.domain.Post;
+import com.study.boardsystem.module.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 
 /**
- * packageName    : com.study.boardsystem.web.dto
+ * packageName    : com.study.boardsystem.module.post.web.dto
  * fileName       : PostSaveRequestDto
  * author         : tkdwk567@naver.com
  * date           : 2022/06/28

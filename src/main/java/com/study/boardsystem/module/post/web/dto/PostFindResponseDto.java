@@ -1,10 +1,10 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.post.web.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * packageName    : com.study.boardsystem.web.dto
+ * packageName    : com.study.boardsystem.module.post.web.dto
  * fileName       : PostDto
  * author         : tkdwk567@naver.com
  * date           : 2022/07/18

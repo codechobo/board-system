@@ -1,11 +1,11 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.module.post.web.dto;
 
-import com.study.boardsystem.domain.Post;
+import com.study.boardsystem.module.post.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 
 /**
- * packageName    : com.study.boardsystem.web
+ * packageName    : com.study.boardsystem.module.post.web
  * fileName       : PostSaveResponseDto
  * author         : tkdwk567@naver.com
  * date           : 2022/07/18

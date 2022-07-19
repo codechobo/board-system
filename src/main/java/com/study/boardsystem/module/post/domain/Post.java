@@ -1,6 +1,6 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.module.post.domain;
 
-import com.study.boardsystem.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : Post
  * author         : tkdwk567@naver.com
  * date           : 2022/06/22

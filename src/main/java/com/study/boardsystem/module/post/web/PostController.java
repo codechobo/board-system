@@ -1,11 +1,11 @@
-package com.study.boardsystem.web;
+package com.study.boardsystem.module.post.web;
 
-import com.study.boardsystem.domain.PostRepository;
-import com.study.boardsystem.service.PostService;
-import com.study.boardsystem.web.dto.PostFindResponseDto;
-import com.study.boardsystem.web.dto.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.PostSaveResponseDto;
-import com.study.boardsystem.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.post.domain.PostRepository;
+import com.study.boardsystem.module.post.service.PostService;
+import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveRequestDto;
+import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
+import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * packageName    : com.study.boardsystem.web
+ * packageName    : com.study.boardsystem.module.post.web
  * fileName       : PostController
  * author         : tkdwk567@naver.com
  * date           : 2022/06/28

@@ -1,4 +1,4 @@
-package com.study.boardsystem.domain;
+package com.study.boardsystem.module.post.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * packageName    : com.study.boardsystem.domain
+ * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : PostRepositoryTest
  * author         : tkdwk567@naver.com
  * date           : 2022/07/18
