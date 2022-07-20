@@ -29,4 +29,5 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "user_name", nullable = false, length = 20)
     private String userName;
 
+
 }
