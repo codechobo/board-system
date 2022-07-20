@@ -35,7 +35,7 @@ public class Post extends BaseTimeEntity {
     @Lob
     private String description;
 
-    @Column(name = "comments_id")
+    @Column
     private Long commentsId;
 
     @Builder

@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * packageName    : com.study.boardsystem.module.user.service
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 @SpringBootTest
+@Transactional
 class UserServiceTest {
 
     @Autowired
@@ -31,10 +33,7 @@ class UserServiceTest {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
-
-//    @BeforeEach
+    @BeforeEach
     public void before() {
         UserSaveRequestDto userSaveRequestDto = UserSaveRequestDto.builder()
                 .name("뚱이")
@@ -46,23 +45,12 @@ class UserServiceTest {
                 .address2("돌돌")
                 .build();
 
-        userRepository.save(modelMapper.map(userSaveRequestDto, User.class));
+        userRepository.save(userSaveRequestDto.toEntity());
     }
 
-//    @AfterEach
+    @AfterEach
     public void after() {
         userRepository.deleteAll();
-    }
-
-    @Test
-    @DisplayName("model mapper test")
-    void modelMapperTest() {
-        UserSaveRequestDto userSaveDto = createUserSaveDto();
-        User user = modelMapper.map(userSaveDto, User.class);
-
-        assertNotNull(user);
-        System.out.println(user.getName());
-        System.out.println(user.getEmail());
     }
 
     @Test
@@ -75,11 +63,11 @@ class UserServiceTest {
         Long join = userService.join(userSaveDto);
 
         // then
-//        User user = userRepository.findByNickname(userSaveDto.getNickname()).orElseThrow();
-//        assertThat(user).isNotNull();
-//        assertThat(user.getName()).isEqualTo(userSaveDto.getName());
-//        assertThat(user.getEmail()).isEqualTo(userSaveDto.getEmail());
-//        assertThat(user.isJoin()).isTrue();
+        User user = userRepository.findByNickname(userSaveDto.getNickname()).orElseThrow();
+        assertThat(user).isNotNull();
+        assertThat(user.getName()).isEqualTo(userSaveDto.getName());
+        assertThat(user.getEmail()).isEqualTo(userSaveDto.getEmail());
+        assertThat(user.isJoin()).isTrue();
     }
 
     @Test

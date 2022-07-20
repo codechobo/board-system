@@ -24,4 +24,5 @@ public class UserSaveResponseDto {
 
     private String address2;
 
+
 }

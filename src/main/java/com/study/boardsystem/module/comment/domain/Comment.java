@@ -24,13 +24,13 @@ public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_nickname", nullable = false, length = 20)
+    @Column
     private String userNickname;
 
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "posts_id")
+    @Column
     private Long postId;
 
     @Builder

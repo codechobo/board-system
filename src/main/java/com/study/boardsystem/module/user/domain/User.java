@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.user.domain;
 
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,26 +14,34 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {
+                    "nickname",
+                    "password",
+                    "email",
+                    "name"}
+        )
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "password")
-public class User{
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, length = 20)
     private String nickname;
 
     // TODO 비밀번호 인코딩 필요
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false,unique = true, length = 20)
+    @Column(nullable = false, length = 20)
     private String name;
 
     @Column(length = 20)

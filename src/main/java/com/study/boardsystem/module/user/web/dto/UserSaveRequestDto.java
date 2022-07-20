@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.user.web.dto;
 
+import com.study.boardsystem.module.user.domain.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,5 +54,17 @@ public class UserSaveRequestDto {
         this.city = city;
         this.address1 = address1;
         this.address2 = address2;
+    }
+
+    public User toEntity() {
+        return  User.builder()
+                .name(this.name)
+                .email(this.email)
+                .nickname(this.nickname)
+                .password(this.password)
+                .city(this.city)
+                .address1(this.address1)
+                .address2(this.address2)
+                .build();
     }
 }

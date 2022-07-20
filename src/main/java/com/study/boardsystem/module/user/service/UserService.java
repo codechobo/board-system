@@ -34,7 +34,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 존재하는 이메일 정보입니다.");
         }
 
-        User user = modelMapper.map(userSaveRequestDto, User.class);
+        User user = userSaveRequestDto.toEntity();
         user.joinCheck(true);
 
         userRepository.save(user);
@@ -49,7 +49,9 @@ public class UserService {
     @Transactional
     public Long updateUserInfo(Long userId, UserUpdateRequestDto userUpdateRequestDto) {
         User user = findUsersById(userId);
-        modelMapper.map(userUpdateRequestDto, user);
+        user.updateEmail(userUpdateRequestDto.getEmail());
+        user.updateNickname(userUpdateRequestDto.getNickname());
+        user.updateAddress(userUpdateRequestDto.getCity(), userUpdateRequestDto.getAddress1(), userUpdateRequestDto.getAddress2());
         return user.getId();
     }
 

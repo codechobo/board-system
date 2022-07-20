@@ -78,21 +78,20 @@ class UserControllerTest {
     @DisplayName("회원가입 실패")
     void createUser_duplicationNickName_fail() throws Exception {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
-        userRepository.save(modelMapper.map(userRequestDto, User.class));
+        userRepository.save(userRequestDto.toEntity());
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userRequestDto)))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
-
     }
 
     @Test
     @DisplayName("회원 조회하기")
     void getUser_with_id() throws Exception {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
-        User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
+        User user = userRepository.save(userRequestDto.toEntity());
 
         UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
 
@@ -109,7 +108,7 @@ class UserControllerTest {
     @DisplayName("이메일로 회원 조회하기")
     void getUser_with_nickname_email() throws Exception {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
-        User user = userRepository.save(modelMapper.map(userRequestDto, User.class));
+        User user = userRepository.save(userRequestDto.toEntity());
         UserSaveResponseDto userSaveResponseDto = modelMapper.map(user, UserSaveResponseDto.class);
 
         String dto = objectMapper.writeValueAsString(userSaveResponseDto);
@@ -126,7 +125,7 @@ class UserControllerTest {
         UserUpdateRequestDto userUpdateRequestDto = createUserUpdateRequestDto();
 
         UserSaveRequestDto userRequestDto = createUserRequestDto();
-        User saveUser = userRepository.save(modelMapper.map(userRequestDto, User.class));
+        User saveUser = userRepository.save(userRequestDto.toEntity());
 
         String updateDto = objectMapper.writeValueAsString(userUpdateRequestDto);
         mockMvc.perform(put("/api/users/" + saveUser.getId())
@@ -149,7 +148,7 @@ class UserControllerTest {
     @DisplayName("회원 정보 삭제")
     void deleteUser() throws Exception {
         UserSaveRequestDto userRequestDto = createUserRequestDto();
-        User saveUser = userRepository.save(modelMapper.map(userRequestDto, User.class));
+        User saveUser = userRepository.save(userRequestDto.toEntity());
 
         mockMvc.perform(delete("/api/users/" + saveUser.getId()))
                 .andExpect(status().isOk());
