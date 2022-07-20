@@ -1,6 +1,6 @@
 package com.study.boardsystem.module.user.domain;
 
-import com.study.boardsystem.module.base.BaseTimeEntity;
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,11 +14,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table(name = "users")
-@ToString(exclude = "password")
+@ToString(exclude = "password", callSuper = true)
 public class User extends BaseTimeEntity {
 
     @Id
@@ -50,6 +48,17 @@ public class User extends BaseTimeEntity {
 
     @Column
     private boolean isJoin;
+
+    @Builder
+    public User(String nickname, String password, String email, String name, String city, String address1, String address2) {
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.city = city;
+        this.address1 = address1;
+        this.address2 = address2;
+    }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;

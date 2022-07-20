@@ -1,6 +1,6 @@
 package com.study.boardsystem.module.comment.domain;
 
-import com.study.boardsystem.module.base.BaseTimeEntity;
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
