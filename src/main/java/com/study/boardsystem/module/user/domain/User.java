@@ -1,11 +1,9 @@
 package com.study.boardsystem.module.user.domain;
 
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * packageName    : com.study.boardsystem.module.post.domain
@@ -15,14 +13,11 @@ import java.time.LocalDateTime;
  */
 
 @Getter
-@Setter
 @Entity
-@Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Table(name = "users")
-@ToString
-public class User {
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,14 +46,19 @@ public class User {
     @Column(length = 20)
     private String address2;
 
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
-
     @Column
     private boolean isJoin;
+
+    @Builder
+    public User(String nickname, String password, String email, String name, String city, String address1, String address2) {
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.city = city;
+        this.address1 = address1;
+        this.address2 = address2;
+    }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;

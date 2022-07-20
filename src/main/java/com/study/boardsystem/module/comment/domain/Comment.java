@@ -1,6 +1,10 @@
 package com.study.boardsystem.module.comment.domain;
 
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -13,7 +17,10 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-public class Comment {
+@Table(name = "comments")
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

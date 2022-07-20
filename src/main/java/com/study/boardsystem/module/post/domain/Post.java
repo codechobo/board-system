@@ -1,16 +1,12 @@
 package com.study.boardsystem.module.post.domain;
 
+import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +20,10 @@ import java.util.List;
 @Getter
 @Entity
 @DynamicUpdate
-@NoArgsConstructor
-public class Post {
+@Table(name = "posts")
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,12 +40,6 @@ public class Post {
 
     @OneToMany
     private List<Comment> comment = new ArrayList<>();
-
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @UpdateTimestamp
-    private LocalDateTime updateDateTime;
 
     @Builder
     public Post(String userName, String title, String description) {
