@@ -1,6 +1,5 @@
 package com.study.boardsystem.module.user.domain;
 
-import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,14 +13,13 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-@ToString(exclude = "password", callSuper = true)
-public class User extends BaseTimeEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = "password")
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "users_id")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 20)
@@ -31,10 +29,10 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false,unique = true, length = 20)
     private String name;
 
     @Column(length = 20)

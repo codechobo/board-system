@@ -41,14 +41,14 @@ class PostServiceTest {
     @BeforeEach
     public void setUp() {
         Post post1 = PostSaveRequestDto.builder()
-                .userName("기영이")
+                .userNickname("기영이")
                 .title("검정고무신1")
                 .description("검정고무신1 완전 재밌지~~~")
                 .build()
                 .toEntity();
 
         Post post2 = PostSaveRequestDto.builder()
-                .userName("기철이")
+                .userNickname("기철이")
                 .title("검정고무신2")
                 .description("검정고무신2 완전 재밌지~~~")
                 .build()
@@ -66,7 +66,7 @@ class PostServiceTest {
     @DisplayName("게시판을 생성한다.")
     void createPost() {
         PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userName("기철이")
+                .userNickname("기철이")
                 .title("검정고무신")
                 .description("검정고무신 완전 재밌어요~~~")
                 .build();
@@ -81,7 +81,7 @@ class PostServiceTest {
     void findPost() {
         // given
         PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userName("기철이")
+                .userNickname("기철이")
                 .title("검정고무신")
                 .description("검정고무신 완전 재밌어요~~~")
                 .build();
@@ -103,7 +103,7 @@ class PostServiceTest {
 
         assertThat(posts).isNotNull();
         assertThat(posts.size()).isEqualTo(2);
-        assertThat(posts.get(0).getUserName()).isEqualTo("기영이");
+        assertThat(posts.get(0).getUserNickname()).isEqualTo("기영이");
     }
 
     @Test
@@ -111,7 +111,7 @@ class PostServiceTest {
     void deletePost() {
         // given
         PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userName("기영 어머니")
+                .userNickname("기영 어머니")
                 .title("검정고무신")
                 .description("검정고무신 완전 재밌어요~~~")
                 .build();

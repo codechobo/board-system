@@ -25,8 +25,8 @@ public class PostSaveRequestDto {
 
     @NotNull
     @Length(max = 20)
-    @JsonProperty("user_name")
-    private String userName;
+    @JsonProperty("user_nickname")
+    private String userNickname;
 
     @NotNull
     @Length(max = 50)
@@ -39,7 +39,7 @@ public class PostSaveRequestDto {
 
     public Post toEntity() {
         return Post.builder()
-                .userName(this.userName)
+                .userNickname(this.userNickname)
                 .title(this.title)
                 .description(this.description)
                 .build();

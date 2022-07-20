@@ -19,6 +19,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select new " +
             "com.study.boardsystem.module.post.web.dto.PostFindResponseDto(p.title, p.description) " +
             "from Post p " +
-            "where p.userName =:userName")
+            "where p.userNickname =:userName")
     List<PostFindResponseDto> findByName(@Param("userName") String userName);
 }

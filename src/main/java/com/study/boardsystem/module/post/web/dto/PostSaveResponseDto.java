@@ -19,7 +19,7 @@ public class PostSaveResponseDto {
 
     @Builder
     public PostSaveResponseDto(Post post) {
-        this.userName = post.getUserName();
+        this.userName = post.getUserNickname();
         this.title = post.getTitle();
     }
 }

@@ -26,7 +26,6 @@ public class UserSaveRequestDto {
     private String name;
 
     @Email
-    @NotNull
     private String email;
 
     @NotNull

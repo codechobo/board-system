@@ -1,17 +1,16 @@
 package com.study.boardsystem.module.user.web;
 
-import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
-import com.study.boardsystem.module.user.service.UserService;
 import com.study.boardsystem.module.user.domain.validator.UserValidator;
+import com.study.boardsystem.module.user.service.UserService;
+import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
 import com.study.boardsystem.module.user.web.dto.UserSaveResponseDto;
 import com.study.boardsystem.module.user.web.dto.UserUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * packageName    : com.study.boardsystem.module.post.domain
@@ -34,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Long> createUser(@RequestBody @Valid UserSaveRequestDto userSaveRequestDto) {
+    public ResponseEntity<Long> createUser(@RequestBody @Validated UserSaveRequestDto userSaveRequestDto) {
         Long joinId = userService.join(userSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(joinId);
     }

@@ -17,7 +17,7 @@ class PostTest {
     @DisplayName("post 객체 생성")
     void PostTest() {
         Post post = Post.builder()
-                .userName("스폰지밥")
+                .userNickname("스폰지밥")
                 .title("제목")
                 .description("글 내용 길게~~~")
                 .build();

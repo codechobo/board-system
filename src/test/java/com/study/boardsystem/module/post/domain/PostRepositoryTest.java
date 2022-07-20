@@ -22,7 +22,7 @@ class PostRepositoryTest {
     @Test
     void PostRepositoryTest() {
         Post post = Post.builder()
-                .userName("기영이")
+                .userNickname("기영이")
                 .title("검정고무신")
                 .description("재밌어요~")
                 .build();

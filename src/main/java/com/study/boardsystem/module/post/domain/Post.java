@@ -1,14 +1,11 @@
 package com.study.boardsystem.module.post.domain;
 
 import com.study.boardsystem.module.base.domain.BaseTimeEntity;
-import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.module.post.domain
@@ -29,8 +26,8 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", nullable = false, length = 20)
-    private String userName;
+    @Column(name = "user_nickname", nullable = false, length = 20, unique = true)
+    private String userNickname;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -38,12 +35,12 @@ public class Post extends BaseTimeEntity {
     @Lob
     private String description;
 
-    @OneToMany
-    private List<Comment> comment = new ArrayList<>();
+    @Column(name = "comments_id")
+    private Long commentsId;
 
     @Builder
-    public Post(String userName, String title, String description) {
-        this.userName = userName;
+    public Post(String userNickname, String title, String description) {
+        this.userNickname = userNickname;
         this.title = title;
         this.description = description;
     }

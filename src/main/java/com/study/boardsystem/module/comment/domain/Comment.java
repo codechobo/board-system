@@ -2,6 +2,7 @@ package com.study.boardsystem.module.comment.domain;
 
 import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +24,23 @@ public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_nickname", nullable = false, length = 20)
+    private String userNickname;
+
     @Column(nullable = false)
     private String content;
 
-    @Column(name = "user_name", nullable = false, length = 20)
-    private String userName;
+    @Column(name = "posts_id")
+    private Long postId;
 
+    @Builder
+    public Comment(String userNickname, String content, Long postId) {
+        this.userNickname = userNickname;
+        this.content = content;
+        this.postId = postId;
+    }
 
+    public void addPostsId(Long postsId) {
+        this.postId = postsId;
+    }
 }
