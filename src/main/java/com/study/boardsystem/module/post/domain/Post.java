@@ -24,9 +24,10 @@ public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "posts_id")
     private Long id;
 
-    @Column(name = "user_nickname", nullable = false, length = 20, unique = true)
+    @Column(name = "user_nickname")
     private String userNickname;
 
     @Column(nullable = false, length = 50)
@@ -34,9 +35,6 @@ public class Post extends BaseTimeEntity {
 
     @Lob
     private String description;
-
-    @Column
-    private Long commentsId;
 
     @Builder
     public Post(String userNickname, String title, String description) {

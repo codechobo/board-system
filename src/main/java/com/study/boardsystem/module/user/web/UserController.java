@@ -45,8 +45,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<UserSaveResponseDto> getUser(@RequestParam String nicknameOrEmail) {
-        UserSaveResponseDto userSaveResponseDto = userService.findUserEmail(nicknameOrEmail);
+    public ResponseEntity<UserSaveResponseDto> getUser(@RequestParam String email) {
+        UserSaveResponseDto userSaveResponseDto = userService.findUserEmail(email);
         return ResponseEntity.ok().body(userSaveResponseDto);
     }
 
