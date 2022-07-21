@@ -1,4 +1,4 @@
-package com.study.boardsystem.module.user.domain;
+package com.study.boardsystem.module.user.domain.type;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,16 +17,16 @@ import javax.persistence.Embeddable;
 
 @Getter
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
 
-    @Column(name = "city")
+    @Column(name = "CITY")
     private String city;
 
-    @Column(name = "street")
+    @Column(name = "STREET")
     private String street;
 
-    @Column(name = "zipcode")
+    @Column(name = "ZIPCODE")
     private String zipcode;
 
     @Builder

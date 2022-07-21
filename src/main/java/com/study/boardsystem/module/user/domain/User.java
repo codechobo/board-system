@@ -1,6 +1,7 @@
 package com.study.boardsystem.module.user.domain;
 
 import com.study.boardsystem.module.base.domain.BaseTimeEntity;
+import com.study.boardsystem.module.user.domain.type.Address;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "USERS", uniqueConstraints = {
         @UniqueConstraint(
                 columnNames = {
                         "nickname",
@@ -30,31 +31,31 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "users_id")
+    @Column(name = "USERS_ID")
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "NICKNAME", nullable = false, length = 20)
     private String nickname;
 
     // TODO 비밀번호 인코딩 필요
-    @Column(nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "NAME", nullable = false, length = 20)
     private String name;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "city", column = @Column(name = "users_city")),
-            @AttributeOverride(name = "street", column = @Column(name = "users_street")),
-            @AttributeOverride(name = "zipcode", column = @Column(name = "users_zipcode"))
+            @AttributeOverride(name = "city", column = @Column(name = "USERS_CITY")),
+            @AttributeOverride(name = "street", column = @Column(name = "USERS_STREET")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "USERS_ZIPCODE"))
     })
     private Address address;
 
-    @Column
+    @Column(name = "IS_JOIN")
     private boolean isJoin;
 
     @Builder

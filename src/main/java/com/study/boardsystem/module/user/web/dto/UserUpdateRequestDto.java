@@ -1,6 +1,6 @@
 package com.study.boardsystem.module.user.web.dto;
 
-import com.study.boardsystem.module.user.domain.Address;
+import com.study.boardsystem.module.user.domain.type.Address;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

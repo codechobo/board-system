@@ -17,23 +17,24 @@ import javax.persistence.*;
 @Getter
 @Entity
 @DynamicUpdate
-@Table(name = "posts")
+@Table(name = "POSTS")
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "posts_id")
+    @Column(name = "POSTS_ID")
     private Long id;
 
-    @Column(name = "user_nickname")
+    @Column(name = "USER_NICKNAME")
     private String userNickname;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "TITLE", nullable = false, length = 50)
     private String title;
 
     @Lob
+    @Column(name = "DESCRIPTION")
     private String description;
 
     @Builder

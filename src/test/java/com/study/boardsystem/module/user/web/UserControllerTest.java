@@ -1,7 +1,7 @@
 package com.study.boardsystem.module.user.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.boardsystem.module.user.domain.Address;
+import com.study.boardsystem.module.user.domain.type.Address;
 import com.study.boardsystem.module.user.domain.User;
 import com.study.boardsystem.module.user.domain.UserRepository;
 import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;

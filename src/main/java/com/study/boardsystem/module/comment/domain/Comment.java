@@ -17,18 +17,18 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "comments")
+@Table(name = "COMMENTS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comments_id")
+    @Column(name = "COMMENTS_ID")
     private Long id;
 
-    @Column
+    @Column(name = "USER_NICKNAME")
     private String userNickname;
 
-    @Column(nullable = false)
+    @Column(name = "CONTENT", nullable = false)
     private String content;
 
     @Builder

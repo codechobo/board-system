@@ -3,7 +3,7 @@ package com.study.boardsystem.module.comment.service;
 import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.comment.domain.CommentRepository;
 import com.study.boardsystem.module.comment.web.dto.CommentSaveRequestDto;
-import com.study.boardsystem.module.user.domain.Address;
+import com.study.boardsystem.module.user.domain.type.Address;
 import com.study.boardsystem.module.user.domain.User;
 import com.study.boardsystem.module.user.domain.UserRepository;
 import org.junit.jupiter.api.DisplayName;
