@@ -26,7 +26,7 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_nickname", nullable = false, length = 20, unique = true)
+    @Column(name = "user_nickname", nullable = false)
     private String userNickname;
 
     @Column(nullable = false, length = 50)
@@ -36,7 +36,10 @@ public class Post extends BaseTimeEntity {
     private String description;
 
     @Column
-    private Long commentsId;
+    private Long usersId; // 회원 fk
+
+    @Column
+    private Long commentsId; // 댓글 fk
 
     @Builder
     public Post(String userNickname, String title, String description) {
