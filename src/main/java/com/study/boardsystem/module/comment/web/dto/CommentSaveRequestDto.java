@@ -1,4 +1,4 @@
-package com.study.boardsystem.module.comment.dto;
+package com.study.boardsystem.module.comment.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.study.boardsystem.module.comment.domain.Comment;
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotNull;
 
 /**
- * packageName    : com.study.boardsystem.module.comment.dto
+ * packageName    : com.study.boardsystem.module.comment.web.dto
  * fileName       : CommentSaveRequestDto
  * author         : tkdwk567@naver.com
  * date           : 2022/07/20
