@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.user.service;
 
+import com.study.boardsystem.module.user.domain.Address;
 import com.study.boardsystem.module.user.domain.User;
 import com.study.boardsystem.module.user.domain.UserRepository;
 import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +40,11 @@ class UserServiceTest {
                 .email("뚱@naver.com")
                 .nickname("불가사리")
                 .password("뚱이12")
-                .city("바다")
-                .address1("돌")
-                .address2("돌돌")
+                .address(Address.builder()
+                        .city("바다")
+                        .street("비키니시티")
+                        .zipcode("바위")
+                        .build())
                 .build();
 
         userRepository.save(userSaveRequestDto.toEntity());
@@ -107,9 +109,11 @@ class UserServiceTest {
                 .email("스폰지밥@naver.com")
                 .nickname("스폰지")
                 .password("스폰지1234")
-                .city("바다")
-                .address1("파인애플")
-                .address2("애플")
+                .address(Address.builder()
+                        .city("바다")
+                        .street("비키니시티")
+                        .zipcode("파인애플")
+                        .build())
                 .build();
     }
 

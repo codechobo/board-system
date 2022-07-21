@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 /**
  * packageName    : com.study.boardsystem.module.post.domain
  * fileName       : User
@@ -16,15 +17,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(
-            columnNames = {
-                    "nickname",
-                    "password",
-                    "email",
-                    "name"}
+                columnNames = {
+                        "nickname",
+                        "password",
+                        "email",
+                        "name"}
         )
 })
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "password")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
     @Id
@@ -44,27 +45,24 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(length = 20)
-    private String city;
-
-    @Column(length = 20)
-    private String address1;
-
-    @Column(length = 20)
-    private String address2;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "users_city")),
+            @AttributeOverride(name = "street", column = @Column(name = "users_street")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "users_zipcode"))
+    })
+    private Address address;
 
     @Column
     private boolean isJoin;
 
     @Builder
-    public User(String nickname, String password, String email, String name, String city, String address1, String address2) {
+    public User(String nickname, String password, String email, String name, Address address) {
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.name = name;
-        this.city = city;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.address = address;
     }
 
     public void updateNickname(String nickname) {
@@ -75,16 +73,18 @@ public class User extends BaseTimeEntity {
         this.email = email;
     }
 
+    public void updateAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("주소를 생성할 수 없습니다.");
+        }
+        this.address = address;
+    }
+
     // TODO 비밀번호 인코딩 필요
     public void updatePassword(String password) {
         this.password = password;
     }
 
-    public void updateAddress(String city, String address1, String address2) {
-        this.city = city;
-        this.address1 = address1;
-        this.address2 = address2;
-    }
 
     public void joinCheck(boolean isJoin) {
         this.isJoin = isJoin;

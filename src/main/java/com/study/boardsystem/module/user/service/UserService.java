@@ -51,7 +51,7 @@ public class UserService {
         User user = findUsersById(userId);
         user.updateEmail(userUpdateRequestDto.getEmail());
         user.updateNickname(userUpdateRequestDto.getNickname());
-        user.updateAddress(userUpdateRequestDto.getCity(), userUpdateRequestDto.getAddress1(), userUpdateRequestDto.getAddress2());
+        user.updateAddress(userUpdateRequestDto.getAddress());
         return user.getId();
     }
 
