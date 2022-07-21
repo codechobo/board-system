@@ -2,6 +2,7 @@ package com.study.boardsystem.module.post.domain;
 
 import com.study.boardsystem.module.base.domain.BaseTimeEntity;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.user.domain.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -37,11 +38,19 @@ public class Post extends BaseTimeEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "USERS_ID")
+    private User user;
+
     @Builder
     public Post(String userNickname, String title, String description) {
         this.userNickname = userNickname;
         this.title = title;
         this.description = description;
+    }
+
+    public void addUser(User user) {
+        this.user = user;
     }
 
     public void updateEntity(PostUpdateRequestDto postUpdateRequestDto) {

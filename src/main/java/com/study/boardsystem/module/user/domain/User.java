@@ -19,10 +19,10 @@ import javax.persistence.*;
 @Table(name = "USERS", uniqueConstraints = {
         @UniqueConstraint(
                 columnNames = {
-                        "nickname",
-                        "password",
-                        "email",
-                        "name"}
+                        "NICKNAME",
+                        "PASSWORD",
+                        "EMAIL",
+                        "NAME"}
         )
 })
 @ToString(exclude = "password")
