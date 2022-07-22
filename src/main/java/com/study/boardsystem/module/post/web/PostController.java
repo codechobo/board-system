@@ -30,10 +30,11 @@ public class PostController {
     private final PostService postService;
     private final PostRepository postRepository;
 
-    @PostMapping("/posts")
+    @PostMapping("/{id}/posts")
     public ResponseEntity<PostSaveResponseDto> createPosts(
+            @PathVariable(name = "id") Long usersId,
             @RequestBody PostSaveRequestDto postSaveRequestDto) {
-        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        PostSaveResponseDto dto = postService.create(usersId, postSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 

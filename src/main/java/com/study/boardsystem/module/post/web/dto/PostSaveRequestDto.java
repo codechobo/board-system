@@ -24,11 +24,6 @@ import javax.validation.constraints.NotNull;
 public class PostSaveRequestDto {
 
     @NotNull
-    @Length(max = 20)
-    @JsonProperty("user_nickname")
-    private String userNickname;
-
-    @NotNull
     @Length(max = 50)
     @JsonProperty("title")
     private String title;
@@ -39,7 +34,6 @@ public class PostSaveRequestDto {
 
     public Post toEntity() {
         return Post.builder()
-                .userNickname(this.userNickname)
                 .title(this.title)
                 .description(this.description)
                 .build();
