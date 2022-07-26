@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "MEMBERS")
 @Entity
 public class Member extends TimeEntity {
 
