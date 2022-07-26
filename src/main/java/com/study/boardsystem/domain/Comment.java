@@ -1,5 +1,6 @@
 package com.study.boardsystem.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,13 +35,44 @@ public class Comment extends TimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "POSTS_ID")
-    private Post Post;
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "PARENT_ID")
     private Comment parent;
 
+    @Builder
+    public Comment(String content, Member member, Post post) {
+        this.content = content;
+        this.member = member;
+        this.post = post;
+    }
+
     @OneToMany(mappedBy = "parent")
     private List<Comment> children = new ArrayList<>();
+
+    public void addMember(Member member) {
+        if (member == null) {
+            throw new IllegalArgumentException("Member Argument Exception!!");
+        }
+        this.member = member;
+    }
+
+    public void addPost(Post post) {
+        if (post == null) {
+            throw new IllegalArgumentException("Member Argument Exception!!");
+        }
+        this.post = post;
+        post.addComment(this);
+    }
+
+    public void addCommentParent(Comment parent) {
+        this.parent = parent;
+        parent.addCommentChildren(this);
+    }
+
+    public void addCommentChildren(Comment children) {
+        this.children.add(children);
+    }
 
 }

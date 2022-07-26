@@ -52,7 +52,7 @@ public class Post extends TimeEntity {
 
     public void addMember(Member member) {
         if (member == null) {
-            throw new IllegalArgumentException("Member argument Exception!!");
+            throw new IllegalArgumentException("Member Argument Exception!!");
         }
         this.member = member;
     }
@@ -64,6 +64,13 @@ public class Post extends TimeEntity {
                 .build();
         post.addMember(member);
         return post;
+    }
+
+    public void addComment(Comment comment) {
+        if (comment == null) {
+            throw new IllegalArgumentException("Comment Argument Exception!!");
+        }
+        this.comments.add(comment);
     }
 
 }
