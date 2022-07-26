@@ -15,7 +15,13 @@ import javax.persistence.*;
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor
-@Table(name = "MEMBERS")
+@Table(name = "MEMBERS", uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {
+                        "NAME",
+                        "NICKNAME",
+                        "EMAIL",
+                        "PASSWORD"})})
 @Entity
 public class Member extends TimeEntity {
 
