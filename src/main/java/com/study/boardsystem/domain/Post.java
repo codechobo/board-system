@@ -3,6 +3,7 @@ package com.study.boardsystem.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Table(name = "POSTS")
 @Entity
@@ -43,8 +45,25 @@ public class Post extends TimeEntity {
     private int hits; // 조회수
 
     @Builder
-    public Post(String title, String description, String author) {
+    public Post(String title, String description) {
         this.title = title;
         this.description = description;
     }
+
+    public void addMember(Member member) {
+        if (member == null) {
+            throw new IllegalArgumentException("Member argument Exception!!");
+        }
+        this.member = member;
+    }
+
+    public static Post createPost(String title, String description, Member member) {
+        Post post = Post.builder()
+                .title(title)
+                .description(description)
+                .build();
+        post.addMember(member);
+        return post;
+    }
+
 }

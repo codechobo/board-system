@@ -1,5 +1,9 @@
 package com.study.boardsystem.domain.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -10,6 +14,9 @@ import javax.persistence.Embeddable;
  * date           : 2022/07/26
  */
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class Address {
 
