@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "POSTS")
 @Entity
-public class Post {
+public class Post extends TimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POSTS_ID")
@@ -32,10 +32,11 @@ public class Post {
     @Column(name = "DESCRIPTION")
     private String description; // 내용
 
-    @Column(name = "AUTHOR")
-    private String author; // 글쓴이
+    @ManyToOne
+    @JoinColumn(name = "MEMBERS_ID")
+    private Member member;
 
-
+    @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
     @Column(name = "HITS")
@@ -45,6 +46,5 @@ public class Post {
     public Post(String title, String description, String author) {
         this.title = title;
         this.description = description;
-        this.author = author;
     }
 }
