@@ -122,6 +122,9 @@ class PostServiceTest extends CreateDomain {
     void findPostList() {
         List<Post> posts = postRepository.findAll();
 
+        for (Post post : posts) {
+            System.out.println(post.getUserNickname());
+        }
         assertAll(
                 () -> assertThat(posts).isNotNull(),
                 () -> assertThat(posts)
@@ -146,7 +149,7 @@ class PostServiceTest extends CreateDomain {
         postRepository.save(post);
 
         // when
-        postService.deleteByIdPost(post.getId());
+        postService.deleteByPost(post.getId());
 
         // then
         assertThatThrownBy(() -> postRepository.findById(post.getId())

@@ -49,8 +49,27 @@ public class Post extends BaseTimeEntity {
         this.description = description;
     }
 
+    public static Post createPost(String userNickname, String title, String description, User user) {
+        Post post = Post.builder()
+                .userNickname(userNickname)
+                .title(title)
+                .description(description)
+                .build();
+        post.addUser(user);
+        return post;
+    }
+
     public void addUser(User user) {
         this.user = user;
+    }
+
+    public void deleteUser(User user) {
+        if (this.user != user) {
+            throw new IllegalArgumentException("삭제할 수 없습니다.");
+        } else {
+            User removeUser = this.user;
+            this.user = null;
+        }
     }
 
     public void updateEntity(PostUpdateRequestDto postUpdateRequestDto) {

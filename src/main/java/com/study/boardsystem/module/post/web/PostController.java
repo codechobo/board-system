@@ -38,9 +38,9 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @GetMapping("/posts/{nickname}")
+    @GetMapping("/posts")
     public ResponseEntity<List<PostFindResponseDto>> searchByName(
-            @Validated @PathVariable("nickname") String userNickname) {
+            @Validated @RequestParam(name = "nickname") String userNickname) {
         List<PostFindResponseDto> dtos = postService.findByNamePosts(userNickname);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
@@ -55,7 +55,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{id}")
     public void deletePost(@PathVariable("id") Long postId) {
-        postService.deleteByIdPost(1L);
+        postService.deleteByPost(postId);
     }
 
     @PutMapping("/posts/{id}")

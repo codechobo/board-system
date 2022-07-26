@@ -32,10 +32,12 @@ public abstract class CreateDomain {
 
     public Post createPost(String title, String description, User user) {
         Post post = PostSaveRequestDto.builder()
+                .userNickname(user.getNickname())
                 .title(title)
                 .description(description)
                 .build()
                 .toEntity();
+
         post.addUser(user);
         return post;
     }

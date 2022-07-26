@@ -33,12 +33,11 @@ public class PostService {
         User user = userRepository.findById(usersId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        Post post = Post.builder()
-                .userNickname(user.getNickname())
-                .title(postSaveRequestDto.getTitle())
-                .description(postSaveRequestDto.getDescription())
-                .build();
-        post.addUser(user);
+        Post post = Post.createPost(
+                user.getNickname(),
+                postSaveRequestDto.getTitle(),
+                postSaveRequestDto.getDescription(),
+                user);
 
         postRepository.save(post);
         return PostSaveResponseDto.builder().post(post).build();
@@ -49,8 +48,9 @@ public class PostService {
     }
 
     @Transactional
-    public void deleteByIdPost(Long postId) {
-        postRepository.deleteById(postId);
+    public void deleteByPost(Long postId) {
+        Post post = getEntity(postId);
+        postRepository.delete(post);
     }
 
     @Transactional
