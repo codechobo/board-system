@@ -6,10 +6,7 @@ import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * packageName    : com.study.boardsystem.web
@@ -30,5 +27,12 @@ public class MemberController {
             @RequestBody MemberSaveRequestDto memberSaveRequestDto) {
         MemberSaveResponseDto memberSaveResponseDto = memberService.joinMember(memberSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(memberSaveResponseDto);
+    }
+
+    @GetMapping("/members/{id}")
+    public ResponseEntity<MemberSaveResponseDto> findByIdMember(
+            @PathVariable("id") Long membersId) {
+        MemberSaveResponseDto memberSaveResponseDto = memberService.findByIdEntity(membersId);
+        return ResponseEntity.status(HttpStatus.OK).body(memberSaveResponseDto);
     }
 }

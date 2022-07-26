@@ -1,5 +1,6 @@
-# profile
+
 spring:
+  # profile
   profiles:
     active: local
 # h2 console

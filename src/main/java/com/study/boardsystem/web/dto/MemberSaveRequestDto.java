@@ -3,10 +3,7 @@ package com.study.boardsystem.web.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.type.Address;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -20,7 +17,8 @@ import javax.validation.constraints.Size;
  * date           : 2022/07/26
  */
 
-@Getter @Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberSaveRequestDto {
