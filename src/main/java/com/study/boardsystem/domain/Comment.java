@@ -41,15 +41,15 @@ public class Comment extends TimeEntity {
     @JoinColumn(name = "PARENT_ID")
     private Comment parent;
 
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> children = new ArrayList<>();
+
     @Builder
     public Comment(String content, Member member, Post post) {
         this.content = content;
         this.member = member;
         this.post = post;
     }
-
-    @OneToMany(mappedBy = "parent")
-    private List<Comment> children = new ArrayList<>();
 
     public void addMember(Member member) {
         if (member == null) {
@@ -66,13 +66,9 @@ public class Comment extends TimeEntity {
         post.addComment(this);
     }
 
-    public void addCommentParent(Comment parent) {
-        this.parent = parent;
-        parent.addCommentChildren(this);
-    }
-
     public void addCommentChildren(Comment children) {
         this.children.add(children);
+        this.parent = this;
     }
 
 }

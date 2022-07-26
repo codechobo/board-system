@@ -70,7 +70,6 @@ class PostTest {
                 .member(commentWriterMember2)
                 .content("난 재미 없던데")
                 .build();
-
         comment.addCommentChildren(comment2);
 
         post.getComments()
