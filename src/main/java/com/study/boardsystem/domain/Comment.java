@@ -1,5 +1,6 @@
 package com.study.boardsystem.domain;
 
+import com.study.boardsystem.domain.base.TimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
