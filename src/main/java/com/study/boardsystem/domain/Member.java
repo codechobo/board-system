@@ -61,4 +61,9 @@ public class Member extends TimeEntity {
         this.password = password;
         this.address = address;
     }
+
+    public void isJoin(boolean join) {
+        this.isJoin = join;
+    }
+
 }
