@@ -8,6 +8,7 @@ import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
+import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -51,7 +53,36 @@ public class MemberService {
     }
 
     public MemberSaveResponseDto findByIdEntity(Long membersId) {
-        Member member = memberRepository.findById(membersId).orElseThrow(NotFoundEntityException::new);
+        Member member = getEntity(membersId);
         return MemberSaveResponseDto.builder().member(member).build();
+    }
+
+    @Transactional
+    public MemberSaveResponseDto updateAfterFindEntity(Long membersId, MemberUpdateRequestDto memberUpdateRequestDto) {
+        Member entity = getEntity(membersId);
+
+        if (entity.getNickname().equals(memberUpdateRequestDto.getNickname())) {
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
+        }
+
+        if (entity.getEmail().equals(memberUpdateRequestDto.getEmail())) {
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
+        }
+
+        if (entity.getPassword().equals(memberUpdateRequestDto.getPassword())) {
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
+        }
+
+        entity.updateEmail(memberUpdateRequestDto.getEmail());
+        entity.updateNickname(memberUpdateRequestDto.getNickname());
+        entity.updatePassword(memberUpdateRequestDto.getPassword());
+
+        return MemberSaveResponseDto.builder()
+                .member(entity)
+                .build();
+    }
+
+    private Member getEntity(Long membersId) {
+        return memberRepository.findById(membersId).orElseThrow(NotFoundEntityException::new);
     }
 }

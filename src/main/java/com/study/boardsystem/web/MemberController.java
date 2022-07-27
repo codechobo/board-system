@@ -5,6 +5,7 @@ import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.service.MemberService;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
+import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +52,15 @@ public class MemberController {
                         .member(member)
                         .build()).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PutMapping("/members/{id}")
+    public ResponseEntity<MemberSaveResponseDto> updateMember(
+            @PathVariable Long id,
+            @Valid @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
+        MemberSaveResponseDto memberSaveResponseDto = memberService
+                .updateAfterFindEntity(id, memberUpdateRequestDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(memberSaveResponseDto);
     }
 }

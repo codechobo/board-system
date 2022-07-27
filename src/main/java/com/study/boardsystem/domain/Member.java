@@ -2,7 +2,12 @@ package com.study.boardsystem.domain;
 
 import com.study.boardsystem.domain.base.TimeEntity;
 import com.study.boardsystem.domain.type.Address;
-import lombok.*;
+import com.study.boardsystem.exception.DuplicationException;
+import com.study.boardsystem.exception.code.CommonErrorCode;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -65,6 +70,18 @@ public class Member extends TimeEntity {
 
     public void isJoin(boolean join) {
         this.isJoin = join;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateNickname(String nickname) {
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
 }
