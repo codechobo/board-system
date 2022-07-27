@@ -11,16 +11,10 @@ import lombok.Getter;
  */
 
 @Getter
-public class DuplicationException extends RuntimeException {
-
-    private final CommonErrorCode errorCode;
+public class DuplicationException extends HandlerException{
 
     public DuplicationException(CommonErrorCode errorCode) {
-        this.errorCode = errorCode;
+        super(errorCode.getMessage(), CommonErrorCode.DUPLICATION_FIELD_VALUE);
     }
 
-    public DuplicationException(String message, CommonErrorCode errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
 }

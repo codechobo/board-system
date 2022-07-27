@@ -23,8 +23,9 @@ import java.time.LocalDateTime;
 @RestControllerAdvice(basePackageClasses = MemberController.class)
 public class MemberRestApiExceptionAdvice {
 
-    @ExceptionHandler(value = NotFoundEntityException.class)
-    public ResponseEntity<ErrorResponseDto> notFoundEntityException(NotFoundEntityException e) {
+    @ExceptionHandler(value = {NotFoundEntityException.class, DuplicationException.class})
+    public ResponseEntity<ErrorResponseDto> notFoundEntityException(HandlerException e) {
+
         ErrorResponseDto errorResponseDto = ErrorResponseDto.create(
                 e.getErrorCode().getHttpStatus().value(),
                 e.getErrorCode().getMessage(),
@@ -42,6 +43,7 @@ public class MemberRestApiExceptionAdvice {
                 .message(bindingResult.getFieldError().getDefaultMessage())
                 .fieldErrors(bindingResult.getFieldErrors())
                 .build();
+
         log.info("Error Name : {}", e.getClass().getSimpleName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
     }

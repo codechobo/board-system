@@ -11,17 +11,9 @@ import lombok.Getter;
  */
 
 @Getter
-public class NotFoundEntityException extends RuntimeException {
-
-    private final CommonErrorCode errorCode;
-
-    public NotFoundEntityException() {
-        this.errorCode = CommonErrorCode.NOT_FOUND_ENTITY;
-    }
+public class NotFoundEntityException extends HandlerException {
 
     public NotFoundEntityException(CommonErrorCode errorCode) {
-        super(CommonErrorCode.NOT_FOUND_ENTITY.getMessage());
-        this.errorCode = CommonErrorCode.NOT_FOUND_ENTITY;
+        super(errorCode.getMessage(), CommonErrorCode.NOT_FOUND_ENTITY);
     }
-
 }
