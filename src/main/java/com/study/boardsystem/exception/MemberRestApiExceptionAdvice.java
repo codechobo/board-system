@@ -42,7 +42,7 @@ public class MemberRestApiExceptionAdvice {
                 .message(bindingResult.getFieldError().getDefaultMessage())
                 .fieldErrors(bindingResult.getFieldErrors())
                 .build();
-
+        log.info("Error Name : {}", e.getClass().getSimpleName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
     }
 
