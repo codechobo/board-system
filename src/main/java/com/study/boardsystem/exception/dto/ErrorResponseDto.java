@@ -26,12 +26,12 @@ public class ErrorResponseDto {
     private List<FieldError> fieldErrors;
     private final LocalDateTime timestamp = LocalDateTime.now();
 
-    @Builder
     public ErrorResponseDto(int statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }
 
+    @Builder
     public ErrorResponseDto(int statusCode, String message, List<FieldError> fieldErrors) {
         this.statusCode = statusCode;
         this.message = message;

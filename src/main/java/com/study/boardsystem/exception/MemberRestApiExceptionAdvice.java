@@ -5,6 +5,8 @@ import com.study.boardsystem.web.MemberController;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,13 +24,25 @@ import java.time.LocalDateTime;
 public class MemberRestApiExceptionAdvice {
 
     @ExceptionHandler(value = NotFoundEntityException.class)
-    public ResponseEntity<ErrorResponseDto> illegalArgumentException(NotFoundEntityException e) {
-        ErrorResponseDto errorResponseDto = ErrorResponseDto
-                .create(e.getErrorCode().getHttpStatus().value(),
-                        e.getErrorCode().getMessage(),
-                        LocalDateTime.now());
+    public ResponseEntity<ErrorResponseDto> notFoundEntityException(NotFoundEntityException e) {
+        ErrorResponseDto errorResponseDto = ErrorResponseDto.create(
+                e.getErrorCode().getHttpStatus().value(),
+                e.getErrorCode().getMessage(),
+                LocalDateTime.now());
 
         log.info("Error Name : {}", e.getClass().getSimpleName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        ErrorResponseDto errorResponseDto = ErrorResponseDto.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(bindingResult.getFieldError().getDefaultMessage())
+                .fieldErrors(bindingResult.getFieldErrors())
+                .build();
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
     }
 
