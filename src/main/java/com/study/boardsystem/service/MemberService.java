@@ -3,6 +3,9 @@ package com.study.boardsystem.service;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.MemberExistsCheckRepository;
 import com.study.boardsystem.domain.MemberRepository;
+import com.study.boardsystem.exception.DuplicationException;
+import com.study.boardsystem.exception.NotFoundEntityException;
+import com.study.boardsystem.exception.code.ErrorCode;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -26,19 +29,19 @@ public class MemberService {
     @Transactional
     public MemberSaveResponseDto joinMember(MemberSaveRequestDto memberSaveRequestDto) {
         if (memberExistsCheckRepository.existsByName(memberSaveRequestDto.getName())) {
-            throw new IllegalArgumentException("Duplication Name Error!!");
+            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByNickname(memberSaveRequestDto.getNickname())) {
-            throw new IllegalArgumentException("Duplication Nickname Error!!");
+            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByEmail(memberSaveRequestDto.getEmail())) {
-            throw new IllegalArgumentException("Duplication Email Error!!");
+            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByPassword(memberSaveRequestDto.getPassword())) {
-            throw new IllegalArgumentException("Duplication Password Error!!");
+            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         Member member = memberSaveRequestDto.toEntity();
@@ -48,8 +51,7 @@ public class MemberService {
     }
 
     public MemberSaveResponseDto findByIdEntity(Long membersId) {
-        Member member = memberRepository.findById(membersId)
-                .orElseThrow(() -> new IllegalArgumentException("Not Found Member!!"));
+        Member member = memberRepository.findById(membersId).orElseThrow(NotFoundEntityException::new);
         return MemberSaveResponseDto.builder().member(member).build();
     }
 }

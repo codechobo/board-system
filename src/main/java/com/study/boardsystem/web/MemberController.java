@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class MemberController {
 
     @PostMapping("/members")
     public ResponseEntity<MemberSaveResponseDto> addMember(
-            @RequestBody MemberSaveRequestDto memberSaveRequestDto) {
+            @Valid @RequestBody MemberSaveRequestDto memberSaveRequestDto) {
         MemberSaveResponseDto memberSaveResponseDto = memberService.joinMember(memberSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(memberSaveResponseDto);
     }
