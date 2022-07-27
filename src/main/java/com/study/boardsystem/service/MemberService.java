@@ -5,7 +5,7 @@ import com.study.boardsystem.domain.MemberExistsCheckRepository;
 import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.exception.DuplicationException;
 import com.study.boardsystem.exception.NotFoundEntityException;
-import com.study.boardsystem.exception.code.ErrorCode;
+import com.study.boardsystem.exception.code.CommonErrorCode;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +29,19 @@ public class MemberService {
     @Transactional
     public MemberSaveResponseDto joinMember(MemberSaveRequestDto memberSaveRequestDto) {
         if (memberExistsCheckRepository.existsByName(memberSaveRequestDto.getName())) {
-            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByNickname(memberSaveRequestDto.getNickname())) {
-            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByEmail(memberSaveRequestDto.getEmail())) {
-            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         if (memberExistsCheckRepository.existsByPassword(memberSaveRequestDto.getPassword())) {
-            throw new DuplicationException(ErrorCode.DUPLICATION_FIELD_VALUE);
+            throw new DuplicationException(CommonErrorCode.DUPLICATION_FIELD_VALUE);
         }
 
         Member member = memberSaveRequestDto.toEntity();

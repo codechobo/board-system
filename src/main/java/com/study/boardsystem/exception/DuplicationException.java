@@ -1,6 +1,6 @@
 package com.study.boardsystem.exception;
 
-import com.study.boardsystem.exception.code.ErrorCode;
+import com.study.boardsystem.exception.code.CommonErrorCode;
 
 /**
  * packageName    : com.study.boardsystem.exception
@@ -11,13 +11,13 @@ import com.study.boardsystem.exception.code.ErrorCode;
 
 public class DuplicationException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final CommonErrorCode errorCode;
 
-    public DuplicationException(ErrorCode errorCode) {
+    public DuplicationException(CommonErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 
-    public DuplicationException(String message, ErrorCode errorCode) {
+    public DuplicationException(String message, CommonErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
     }

@@ -1,11 +1,14 @@
 package com.study.boardsystem.exception;
 
+import com.study.boardsystem.exception.dto.ErrorResponseDto;
 import com.study.boardsystem.web.MemberController;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.study.boardsystem.exception
@@ -19,10 +22,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class MemberRestApiExceptionAdvice {
 
     @ExceptionHandler(value = NotFoundEntityException.class)
-    public ResponseEntity<String> illegalArgumentException(NotFoundEntityException e) {
-        log.info("Error Name : {}", e.getClass().getSimpleName());
+    public ResponseEntity<ErrorResponseDto> illegalArgumentException(NotFoundEntityException e) {
+        ErrorResponseDto errorResponseDto = ErrorResponseDto
+                .create(e.getErrorCode().getHttpStatus().value(),
+                        e.getErrorCode().getMessage(),
+                        LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        log.info("Error Name : {}", e.getClass().getSimpleName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDto);
     }
 
 }

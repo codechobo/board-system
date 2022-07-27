@@ -13,9 +13,10 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum CommonErrorCode {
 
-    NOT_FOUND_ENTITY(HttpStatus.NOT_FOUND, "Not Found Entity !!"),
+    // common
+    NOT_FOUND_ENTITY(HttpStatus.NOT_FOUND, "Not Found Entity!!"),
     DUPLICATION_FIELD_VALUE(HttpStatus.BAD_REQUEST, "Duplication Field Value!!");
 
     private final HttpStatus httpStatus;
