@@ -1,7 +1,8 @@
 package com.study.boardsystem.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.boardsystem.domain.MemberExistsCheckRepository;
+import com.study.boardsystem.domain.Member;
+import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.domain.type.Address;
 import com.study.boardsystem.service.MemberService;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
@@ -13,6 +14,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -39,7 +43,7 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @MockBean
-    private MemberExistsCheckRepository memberExistsCheckRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -114,5 +118,44 @@ class MemberControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(memberService).findByIdEntity(1L);
+    }
+
+    @Test
+    @DisplayName("Member 전제 조회")
+    void getMembers() throws Exception {
+        // given
+        Member member = new Member("이기영",
+                "까까머리",
+                "기영@naver.com",
+                "test1234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+        Member member1 = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+
+        doReturn(List.of(member, member1)).when(memberRepository).findAll();
+        List<MemberSaveResponseDto> content = memberRepository.findAll()
+                .stream()
+                .map(m -> MemberSaveResponseDto.builder()
+                        .member(m)
+                        .build())
+                .collect(Collectors.toList());
+
+        // when && then
+        mockMvc.perform(get("/api/v1/members"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(content)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }
