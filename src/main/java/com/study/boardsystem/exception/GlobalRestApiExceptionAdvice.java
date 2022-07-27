@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 @Log4j2
 @RestControllerAdvice(basePackageClasses = MemberController.class)
-public class MemberRestApiExceptionAdvice {
+public class GlobalRestApiExceptionAdvice {
 
     @ExceptionHandler(value = {NotFoundEntityException.class, DuplicationException.class})
     public ResponseEntity<ErrorResponseDto> notFoundEntityException(HandlerException e) {
