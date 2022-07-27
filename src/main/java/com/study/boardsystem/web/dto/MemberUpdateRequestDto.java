@@ -1,6 +1,7 @@
 package com.study.boardsystem.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.study.boardsystem.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,4 +38,12 @@ public class MemberUpdateRequestDto {
     @Size(min = 5, max = 30)
     @JsonProperty("password")
     private String password;
+
+    public Member toEntity() {
+        return Member.builder()
+                .nickname(this.nickname)
+                .email(this.email)
+                .password(this.password)
+                .build();
+    }
 }

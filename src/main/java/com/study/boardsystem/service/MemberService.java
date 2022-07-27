@@ -6,8 +6,8 @@ import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.exception.DuplicationException;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
-import com.study.boardsystem.web.dto.MemberSaveResponseDto;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
+import com.study.boardsystem.web.dto.MemberSaveResponseDto;
 import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,6 +83,7 @@ public class MemberService {
     }
 
     private Member getEntity(Long membersId) {
-        return memberRepository.findById(membersId).orElseThrow(NotFoundEntityException::new);
+        return memberRepository.findById(membersId)
+                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
     }
 }

@@ -2,8 +2,6 @@ package com.study.boardsystem.domain;
 
 import com.study.boardsystem.domain.base.TimeEntity;
 import com.study.boardsystem.domain.type.Address;
-import com.study.boardsystem.exception.DuplicationException;
-import com.study.boardsystem.exception.code.CommonErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -77,7 +75,7 @@ public class Member extends TimeEntity {
     }
 
     public void updateNickname(String nickname) {
-        this.email = email;
+        this.nickname = nickname;
     }
 
     public void updatePassword(String password) {

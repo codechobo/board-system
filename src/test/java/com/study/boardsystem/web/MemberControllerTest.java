@@ -7,8 +7,11 @@ import com.study.boardsystem.domain.type.Address;
 import com.study.boardsystem.service.MemberService;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
+import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,12 +22,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * packageName    : com.study.boardsystem.web
@@ -34,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @WebMvcTest
+@ExtendWith(MockitoExtension.class)
 class MemberControllerTest {
 
     @Autowired
@@ -157,5 +160,48 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(content)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    @DisplayName("Member 업데이트 한다")
+    void updateMember() throws Exception {
+        // given
+        Member member = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+        given(memberRepository.save(any(Member.class)))
+                .willReturn(member);
+        Member saveMember = memberRepository.save(member);
+
+        MemberUpdateRequestDto memberUpdateRequestDto = MemberUpdateRequestDto.builder()
+                .email("기철2@naver.com")
+                .nickname("라면도둑")
+                .password("test123")
+                .build();
+        saveMember.updateNickname(memberUpdateRequestDto.getNickname());
+        saveMember.updateEmail(memberUpdateRequestDto.getEmail());
+        saveMember.updatePassword(memberUpdateRequestDto.getPassword());
+
+        // when && then
+        when(memberService.updateAfterFindEntity(anyLong(), any(MemberUpdateRequestDto.class)))
+                .thenReturn(MemberSaveResponseDto.builder()
+                        .member(saveMember)
+                        .build());
+
+        mockMvc.perform(put("/api/v1/members/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(memberUpdateRequestDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nickname").value(memberUpdateRequestDto.getNickname()))
+                .andExpect(jsonPath("$.email").value(memberUpdateRequestDto.getEmail()));
     }
 }
