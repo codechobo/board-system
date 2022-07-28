@@ -204,4 +204,29 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.nickname").value(memberUpdateRequestDto.getNickname()))
                 .andExpect(jsonPath("$.email").value(memberUpdateRequestDto.getEmail()));
     }
+
+    @Test
+    @DisplayName("Member 삭제한다")
+    void deleteMember() throws Exception {
+        // given
+        Member member = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+        given(memberRepository.save(any(Member.class)))
+                .willReturn(member);
+        Member saveMember = memberRepository.save(member);
+
+        // when && then
+        mockMvc.perform(delete("/api/v1/members/" + 1L))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(memberService).removeMember(anyLong());
+    }
 }

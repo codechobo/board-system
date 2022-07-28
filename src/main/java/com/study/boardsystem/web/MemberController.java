@@ -63,4 +63,11 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.OK).body(memberSaveResponseDto);
     }
+
+    @DeleteMapping("/members/{id}")
+    public ResponseEntity deleteMember(
+            @PathVariable("id") Long memberId) {
+        memberService.removeMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

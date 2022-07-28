@@ -82,6 +82,12 @@ public class MemberService {
                 .build();
     }
 
+    @Transactional
+    public void removeMember(Long memberId) {
+        Member entity = getEntity(memberId);
+        memberRepository.delete(entity);
+    }
+
     private Member getEntity(Long membersId) {
         return memberRepository.findById(membersId)
                 .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));

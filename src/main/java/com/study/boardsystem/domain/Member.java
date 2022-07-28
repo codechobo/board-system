@@ -2,10 +2,7 @@ package com.study.boardsystem.domain;
 
 import com.study.boardsystem.domain.base.TimeEntity;
 import com.study.boardsystem.domain.type.Address;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,6 +14,7 @@ import javax.persistence.*;
  */
 
 @Getter
+@Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
 @Table(name = "MEMBERS", uniqueConstraints = {

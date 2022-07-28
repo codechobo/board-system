@@ -6,6 +6,7 @@ import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.domain.type.Address;
 import com.study.boardsystem.web.dto.MemberSaveRequestDto;
 import com.study.boardsystem.web.dto.MemberSaveResponseDto;
+import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * packageName    : com.study.boardsystem.service
@@ -95,6 +96,69 @@ class MemberServiceTest {
         assertThat(memberSaveResponseDto.getName()).isEqualTo(memberSaveRequestDto.getName());
         assertThat(memberSaveResponseDto.getNickname()).isEqualTo(memberSaveRequestDto.getNickname());
     }
+
+    @Test
+    @DisplayName("Member 업데이트 한다")
+    void updateAfterFindEntity() {
+        // given
+        Member member = createMember();
+        member.setId(1L);
+
+        given(memberRepository.save(member)).willReturn(member);
+        Member saveMember = memberRepository.save(member);
+
+
+        given(memberRepository.findById(saveMember.getId())).willReturn(Optional.of(member));
+        Member findMember = memberRepository.findById(saveMember.getId()).orElseThrow();
+
+        // when
+        MemberUpdateRequestDto memberUpdateRequestDto = MemberUpdateRequestDto.builder()
+                .nickname("라면도둑")
+                .email("기철@naver.com")
+                .password("test1234123")
+                .build();
+
+        MemberSaveResponseDto result = memberService
+                .updateAfterFindEntity(findMember.getId(), memberUpdateRequestDto);
+
+        // then
+        assertThat(result.getNickname()).isEqualTo(saveMember.getNickname());
+        assertThat(result.getEmail()).isEqualTo(saveMember.getEmail());
+    }
+
+    @Test
+    @DisplayName("Member 삭제한다.")
+    void removeMember() {
+        // given
+        Member member = createMember();
+        member.setId(1L);
+        given(memberRepository.save(member)).willReturn(member);
+        memberRepository.save(member);
+
+        // when
+        MemberService mock = mock(MemberService.class);
+        mock.removeMember(1L);
+
+        // then
+        verify(mock).removeMember(1L);
+
+
+    }
+
+    private Member createMember() {
+        return Member.builder()
+                .name("이기영")
+                .nickname("까까머리")
+                .password("test1234")
+                .email("기영@naver.com")
+                .address(Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build())
+                .build();
+    }
+
 
     private MemberSaveRequestDto createMemberSaveRequestDto(String name, String nickname, String email, String password, Address address) {
         return MemberSaveRequestDto.builder()
