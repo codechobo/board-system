@@ -3,6 +3,7 @@ package com.study.boardsystem.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.Post;
+import com.study.boardsystem.domain.PostRepository;
 import com.study.boardsystem.domain.type.Address;
 import com.study.boardsystem.service.PostService;
 import com.study.boardsystem.web.dto.member.MemberSaveRequestDto;
@@ -21,8 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,6 +42,9 @@ class PostControllerTest {
 
     @MockBean
     private PostService postService;
+
+    @MockBean
+    private PostRepository postRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -114,5 +117,19 @@ class PostControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper
                         .writeValueAsString(postSaveResponseDto)));
+
+        verify(postService).findByIdPost(1L);
+    }
+
+    @Test
+    @DisplayName("Post 삭제한다")
+    void deletePost() throws Exception {
+        doNothing().when(postService).removePost(anyLong());
+
+        mockMvc.perform(delete("/api/v1/posts/" + 1L))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(postService).removePost(1L);
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
@@ -42,8 +43,7 @@ public class PostService {
     }
 
     public PostSaveResponseDto findByIdPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
+        Post post = getEntity(postId);
 
         return PostSaveResponseDto.builder()
                 .nickname(post.getMember().getNickname())
@@ -52,4 +52,17 @@ public class PostService {
                 .build();
 
     }
+
+    @Transactional
+    public void removePost(Long postId) {
+        Post entity = getEntity(postId);
+        postRepository.delete(entity);
+    }
+
+    private Post getEntity(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
+    }
+
+
 }
