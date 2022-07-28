@@ -5,9 +5,9 @@ import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.MemberRepository;
 import com.study.boardsystem.domain.type.Address;
 import com.study.boardsystem.service.MemberService;
-import com.study.boardsystem.web.dto.MemberSaveRequestDto;
-import com.study.boardsystem.web.dto.MemberSaveResponseDto;
-import com.study.boardsystem.web.dto.MemberUpdateRequestDto;
+import com.study.boardsystem.web.dto.member.MemberSaveRequestDto;
+import com.study.boardsystem.web.dto.member.MemberSaveResponseDto;
+import com.study.boardsystem.web.dto.member.MemberUpdateRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * date           : 2022/07/26
  */
 
-@WebMvcTest
+@WebMvcTest(controllers = MemberController.class)
 @ExtendWith(MockitoExtension.class)
 class MemberControllerTest {
 

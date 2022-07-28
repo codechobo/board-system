@@ -1,32 +1,28 @@
-package com.study.boardsystem.web.dto;
+package com.study.boardsystem.web.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.study.boardsystem.domain.Member;
-import com.study.boardsystem.domain.type.Address;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
  * packageName    : com.study.boardsystem.web.dto
- * fileName       : MemberSaveRequestDto
+ * fileName       : MemberUpdateRequestDto
  * author         : tkdwk567@naver.com
- * date           : 2022/07/26
+ * date           : 2022/07/27
  */
 
 @Getter
-@Builder
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class MemberSaveRequestDto {
-
-    @NotEmpty
-    @Size(min = 1, max = 100)
-    @JsonProperty("name")
-    private String name;
+public class MemberUpdateRequestDto {
 
     @NotEmpty
     @Size(min = 1, max = 20)
@@ -43,18 +39,11 @@ public class MemberSaveRequestDto {
     @JsonProperty("password")
     private String password;
 
-    @NotNull
-    @JsonProperty("address")
-    private Address address;
-
     public Member toEntity() {
         return Member.builder()
-                .name(this.name)
                 .nickname(this.nickname)
                 .email(this.email)
                 .password(this.password)
-                .address(this.address)
                 .build();
     }
-
 }
