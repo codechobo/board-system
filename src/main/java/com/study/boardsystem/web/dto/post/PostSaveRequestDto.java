@@ -1,6 +1,7 @@
 package com.study.boardsystem.web.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.study.boardsystem.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +38,12 @@ public class PostSaveRequestDto {
     @Size
     @JsonProperty("description")
     private String description;
+
+    public Post toEntity() {
+        return Post.builder()
+                .title(this.title)
+                .description(this.description)
+                .build();
+    }
 
 }

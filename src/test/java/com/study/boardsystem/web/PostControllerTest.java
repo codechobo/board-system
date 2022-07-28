@@ -19,8 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -90,5 +91,28 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.description").value(description));
 
         verify(postService).savePost(any(PostSaveRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("Post 조회한다")
+    void getPost() throws Exception {
+        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
+                .nickname("까까머리")
+                .title("제목")
+                .description("게시판 내용")
+                .build();
+
+        PostSaveResponseDto postSaveResponseDto = PostSaveResponseDto.toMapper(
+                postSaveRequestDto.toEntity(),
+                postSaveRequestDto.getNickname());
+
+        when(postService.findByIdPost(anyLong())).thenReturn(postSaveResponseDto);
+
+        mockMvc.perform(get("/api/v1/posts/" + 1L))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper
+                        .writeValueAsString(postSaveResponseDto)));
     }
 }
