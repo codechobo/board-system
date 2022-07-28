@@ -23,6 +23,11 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class PostSaveRequestDto {
 
+    @NotEmpty
+    @Size(min = 1, max = 20)
+    @JsonProperty("nickname")
+    private String nickname;
+
     @NotBlank
     @Size(max = 150)
     @JsonProperty("title")

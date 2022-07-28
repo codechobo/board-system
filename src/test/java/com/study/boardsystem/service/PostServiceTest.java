@@ -17,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -51,17 +50,18 @@ class PostServiceTest {
         String description = "재밌지";
 
         PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
+                .nickname(member.getNickname())
                 .title(title)
                 .description(description)
                 .build();
 
         Post post = Post.createPost(title, description, member);
 
-        when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+        when(memberRepository.findByNickname(anyString())).thenReturn(Optional.of(member));
         when(postRepository.save(any())).thenReturn(post);
 
         // when
-        PostSaveResponseDto postSaveResponseDto = postService.savePost(member.getId(), postSaveRequestDto);
+        PostSaveResponseDto postSaveResponseDto = postService.savePost(postSaveRequestDto);
 
         assertThat(postSaveResponseDto.getNickname()).isEqualTo(member.getNickname());
         assertThat(postSaveResponseDto.getTitle()).isEqualTo(post.getTitle());

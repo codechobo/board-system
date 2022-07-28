@@ -27,8 +27,8 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public PostSaveResponseDto savePost(Long memberId, PostSaveRequestDto postSaveRequestDto) {
-        Member member = memberRepository.findById(memberId)
+    public PostSaveResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
+        Member member = memberRepository.findByNickname(postSaveRequestDto.getNickname())
                 .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
 
         Post post = Post.createPost(

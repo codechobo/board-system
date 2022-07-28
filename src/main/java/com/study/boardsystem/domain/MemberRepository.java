@@ -2,6 +2,8 @@ package com.study.boardsystem.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * packageName    : com.study.boardsystem.domain
  * fileName       : MemberRepository
@@ -10,4 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findByNickname(String nickname);
 }

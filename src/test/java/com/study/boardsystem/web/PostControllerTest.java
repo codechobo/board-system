@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.Post;
 import com.study.boardsystem.domain.type.Address;
-import com.study.boardsystem.service.MemberService;
 import com.study.boardsystem.service.PostService;
 import com.study.boardsystem.web.dto.member.MemberSaveRequestDto;
 import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -47,36 +45,10 @@ class PostControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void setUp() {
-        MemberService mock = mock(MemberService.class);
-        MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
-                .name("이기영")
-                .nickname("까까머리")
-                .email("기영@naver.com")
-                .password("test1234")
-                .address(Address.builder()
-                        .city("서울")
-                        .street("어딘가")
-                        .zipcode("살겠지")
-                        .build())
-                .build();
-
-        mock.joinMember(memberSaveRequestDto);
-    }
-
     @Test
     @DisplayName("Post 생성한다")
     void createPost() throws Exception {
         // given
-        String title = "기철이형 나쁘다";
-        String description = "라면 혼자 먹고 진짜 나빠";
-
-        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .title(title)
-                .description(description)
-                .build();
-
         MemberSaveRequestDto memberSaveRequestDto = MemberSaveRequestDto.builder()
                 .name("이기영")
                 .nickname("까까머리")
@@ -91,14 +63,23 @@ class PostControllerTest {
         Member member = memberSaveRequestDto.toEntity();
         member.setId(1L);
 
+        String title = "기철이형 나쁘다";
+        String description = "라면 혼자 먹고 진짜 나빠";
+
+        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
+                .nickname(member.getNickname())
+                .title(title)
+                .description(description)
+                .build();
+
         Post post = Post.createPost(title, description, member);
 
         // when
-        when(postService.savePost(anyLong(), any(PostSaveRequestDto.class)))
+        when(postService.savePost(any(PostSaveRequestDto.class)))
                 .thenReturn(PostSaveResponseDto.toMapper(post, member.getNickname()));
 
         // then
-        mockMvc.perform(post("/api/v1/" + member.getId() + "/posts")
+        mockMvc.perform(post("/api/v1/posts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postSaveRequestDto)))
                 .andDo(print())
@@ -108,6 +89,6 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title").value(title))
                 .andExpect(jsonPath("$.description").value(description));
 
-        verify(postService).savePost(anyLong(), any(PostSaveRequestDto.class));
+        verify(postService).savePost(any(PostSaveRequestDto.class));
     }
 }
