@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -66,6 +67,31 @@ class PostServiceTest {
         assertThat(postSaveResponseDto.getNickname()).isEqualTo(member.getNickname());
         assertThat(postSaveResponseDto.getTitle()).isEqualTo(post.getTitle());
         assertThat(postSaveResponseDto.getDescription()).isEqualTo(post.getDescription());
+    }
+
+    @Test
+    @DisplayName("Post 조회 한다")
+    void findByIdPost() {
+        // given
+        Member member = createMember();
+        Post post = Post.createPost(
+                "검정고무신 재미짐",
+                "라면 먹방 너무 재밌음",
+                member);
+
+        when(postRepository.findById(anyLong()))
+                .thenReturn(Optional.of(post));
+
+        // when
+        PostSaveResponseDto postSaveResponseDto = postService
+                .findByIdPost(1L);
+
+        // then
+        assertEquals(member.getNickname(), postSaveResponseDto.getNickname());
+        assertEquals(post.getTitle(), postSaveResponseDto.getTitle());
+        assertEquals(post.getDescription(), postSaveResponseDto.getDescription());
+
+
     }
 
     private Member createMember() {

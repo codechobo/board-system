@@ -31,4 +31,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postSaveResponseDto);
     }
 
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<PostSaveResponseDto> getPost(
+            @PathVariable("id") Long postId) {
+        PostSaveResponseDto postSaveResponseDto = postService.findByIdPost(postId);
+        return ResponseEntity.status(HttpStatus.OK).body(postSaveResponseDto);
+    }
+
 }

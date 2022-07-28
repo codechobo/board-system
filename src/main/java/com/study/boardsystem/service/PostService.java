@@ -40,4 +40,16 @@ public class PostService {
 
         return PostSaveResponseDto.toMapper(post, member.getNickname());
     }
+
+    public PostSaveResponseDto findByIdPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
+
+        return PostSaveResponseDto.builder()
+                .nickname(post.getMember().getNickname())
+                .title(post.getTitle())
+                .description(post.getDescription())
+                .build();
+
+    }
 }
