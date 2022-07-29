@@ -73,4 +73,11 @@ public class Post extends TimeEntity {
         this.comments.add(comment);
     }
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
 }

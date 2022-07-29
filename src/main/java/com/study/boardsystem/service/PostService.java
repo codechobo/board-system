@@ -3,9 +3,7 @@ package com.study.boardsystem.service;
 import com.study.boardsystem.domain.*;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
-import com.study.boardsystem.web.dto.post.PostSearchNameResponseDto;
-import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.post_dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +59,13 @@ public class PostService {
         postRepository.delete(entity);
     }
 
+    @Transactional
+    public void updateTitleAndDescription(Long postId, PostUpdateRequestDto postUpdateRequestDto) {
+        Post entity = getEntity(postId);
+        entity.updateTitle(postUpdateRequestDto.getTitle());
+        entity.updateDescription(postUpdateRequestDto.getDescription());
+    }
+
     private Post getEntity(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
@@ -86,4 +91,6 @@ public class PostService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
 }

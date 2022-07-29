@@ -2,9 +2,10 @@ package com.study.boardsystem.service;
 
 import com.study.boardsystem.domain.*;
 import com.study.boardsystem.domain.type.Address;
-import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
-import com.study.boardsystem.web.dto.post.PostSearchNameResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostSaveRequestDto;
+import com.study.boardsystem.web.dto.post_dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostSearchNameResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostUpdateRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * packageName    : com.study.boardsystem.service
@@ -143,6 +143,23 @@ class PostServiceTest {
         );
 
         verify(searchPostRepository).findByTitleContaining(anyString());
+    }
+
+    @Test
+    @DisplayName("Post 업데이트 된다")
+    void updateTitleAndDescription() {
+        // given
+        Member member = createMember();
+        Post post = Post.createPost("제목", "글내용", member);
+
+        PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
+                .title("스폰지밥").description("스폰지밥 꿀잼").build();
+
+        PostService mock = mock(PostService.class);
+        mock.updateTitleAndDescription(1L, postUpdateRequestDto);
+
+        verify(mock).updateTitleAndDescription(1L, postUpdateRequestDto);
+
     }
 
     private Member createMember() {

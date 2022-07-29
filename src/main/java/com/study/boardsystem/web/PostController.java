@@ -1,9 +1,10 @@
 package com.study.boardsystem.web;
 
 import com.study.boardsystem.service.PostService;
-import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
-import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
-import com.study.boardsystem.web.dto.post.PostSearchNameResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostSaveRequestDto;
+import com.study.boardsystem.web.dto.post_dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostSearchNameResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,11 +49,17 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
+    @PutMapping("/posts/{id}")
+    public void updatePost(
+            @PathVariable("id") Long postId,
+            @Valid @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
+        postService.updateTitleAndDescription(postId, postUpdateRequestDto);
+    }
+
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity deletePost(
+    public void deletePost(
             @PathVariable("id") Long postId) {
         postService.removePost(postId);
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

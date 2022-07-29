@@ -1,4 +1,4 @@
-package com.study.boardsystem.web.dto.member;
+package com.study.boardsystem.web.dto.member_dto;
 
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.type.Address;

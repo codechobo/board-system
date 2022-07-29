@@ -1,4 +1,4 @@
-package com.study.boardsystem.web.dto.post;
+package com.study.boardsystem.web.dto.post_dto;
 
 import com.study.boardsystem.domain.Post;
 import lombok.AllArgsConstructor;

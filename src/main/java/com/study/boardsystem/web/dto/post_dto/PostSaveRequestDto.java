@@ -1,4 +1,4 @@
-package com.study.boardsystem.web.dto.post;
+package com.study.boardsystem.web.dto.post_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.study.boardsystem.domain.Post;
