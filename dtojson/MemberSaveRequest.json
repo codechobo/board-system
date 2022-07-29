@@ -1,0 +1,12 @@
+{
+  "name": "이기영",
+  "nickname": "까까머리",
+  "email": "기영@naver.com",
+  "password": "test1234",
+  "address": {
+    "city": "서울",
+    "street": "어딘가",
+    "zipcode": "살겠지?"
+  }
+}
+

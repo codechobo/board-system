@@ -67,7 +67,7 @@ public class PostService {
     }
 
     private Post getEntity(Long postId) {
-        return postRepository.findById(postId)
+        return searchPostRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
     }
 

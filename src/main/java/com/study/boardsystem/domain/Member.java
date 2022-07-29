@@ -3,6 +3,7 @@ package com.study.boardsystem.domain;
 import com.study.boardsystem.domain.base.TimeEntity;
 import com.study.boardsystem.domain.type.Address;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@DynamicUpdate
 @ToString(callSuper = true)
 @NoArgsConstructor
 @Table(name = "MEMBERS", uniqueConstraints = {

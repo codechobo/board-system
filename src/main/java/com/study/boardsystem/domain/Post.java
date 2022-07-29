@@ -34,7 +34,7 @@ public class Post extends TimeEntity {
     @Column(name = "DESCRIPTION")
     private String description; // 내용
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBERS_ID")
     private Member member;
 

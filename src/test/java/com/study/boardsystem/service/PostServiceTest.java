@@ -83,7 +83,7 @@ class PostServiceTest {
                 "라면 먹방 너무 재밌음",
                 member);
 
-        when(postRepository.findById(anyLong()))
+        when(searchPostRepository.findById(anyLong()))
                 .thenReturn(Optional.of(post));
 
         // when
