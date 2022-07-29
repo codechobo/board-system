@@ -9,6 +9,8 @@ import com.study.boardsystem.service.PostService;
 import com.study.boardsystem.web.dto.member_dto.MemberSaveRequestDto;
 import com.study.boardsystem.web.dto.post_dto.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.post_dto.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostSearchNameResponseDto;
+import com.study.boardsystem.web.dto.post_dto.PostUpdateRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +21,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -131,5 +140,81 @@ class PostControllerTest {
                 .andExpect(status().isOk());
 
         verify(postService).removePost(1L);
+    }
+
+    @Test
+    @DisplayName("Post 검색한다.")
+    void searchNamePost() throws Exception {
+        Member member = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+        Post post1 = Post.createPost("원피스", "재미지지", member);
+        Post post2 = Post.createPost("스폰지밥", "재미지지", member);
+        Post post3 = Post.createPost("검정 고무신", "재미지지", member);
+
+        List<Post> posts = new ArrayList<>();
+        posts.add(post1);
+        posts.add(post2);
+        posts.add(post3);
+
+        List<PostSearchNameResponseDto> list = posts.stream().map(post -> PostSearchNameResponseDto.builder()
+                        .nickname(post.getMember().getNickname())
+                        .title(post.getTitle())
+                        .createDateTime(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        given(postService.findByTitlePost(anyString()))
+                .willReturn(list);
+
+        String searchTitle = "";
+        mockMvc.perform(get("/api/v1/posts")
+                        .param("title", searchTitle))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(objectMapper.writeValueAsString(list)));
+
+        verify(postService).findByTitlePost(searchTitle);
+    }
+
+    @Test
+    @DisplayName("Post 업데이트 한다")
+    void updatePost() throws Exception {
+        // given
+        Member member = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+
+        willDoNothing().given(postService)
+                .updateTitleAndDescription(anyLong(), any(PostUpdateRequestDto.class));
+
+        PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
+                .title("글 제목 업데이트")
+                .description("내용 업데이트")
+                .build();
+
+        // when && then
+        mockMvc.perform(put("/api/v1/posts/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postUpdateRequestDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(PostController.class));
+
+        verify(postService).updateTitleAndDescription(anyLong(), any(PostUpdateRequestDto.class));
     }
 }
