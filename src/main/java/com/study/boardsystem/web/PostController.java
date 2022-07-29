@@ -1,14 +1,17 @@
 package com.study.boardsystem.web;
 
 import com.study.boardsystem.service.PostService;
-import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
 import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
+import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
+import com.study.boardsystem.web.dto.post.PostSearchNameResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * packageName    : com.study.boardsystem.web
@@ -36,6 +39,13 @@ public class PostController {
             @PathVariable("id") Long postId) {
         PostSaveResponseDto postSaveResponseDto = postService.findByIdPost(postId);
         return ResponseEntity.status(HttpStatus.OK).body(postSaveResponseDto);
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostSearchNameResponseDto>> searchNamePost(
+            @Valid @NotNull @RequestParam String title) {
+        List<PostSearchNameResponseDto> list = postService.findByTitlePost(title);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @DeleteMapping("/posts/{id}")

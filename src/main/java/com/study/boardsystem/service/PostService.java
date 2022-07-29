@@ -1,16 +1,17 @@
 package com.study.boardsystem.service;
 
-import com.study.boardsystem.domain.Member;
-import com.study.boardsystem.domain.MemberRepository;
-import com.study.boardsystem.domain.Post;
-import com.study.boardsystem.domain.PostRepository;
+import com.study.boardsystem.domain.*;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
+import com.study.boardsystem.web.dto.post.PostSearchNameResponseDto;
 import com.study.boardsystem.web.dto.post.PostSaveRequestDto;
 import com.study.boardsystem.web.dto.post.PostSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.study.boardsystem.service
@@ -26,6 +27,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
+    private final SearchPostRepository searchPostRepository;
 
     @Transactional
     public PostSaveResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
@@ -65,4 +67,23 @@ public class PostService {
     }
 
 
+    public List<PostSearchNameResponseDto> findByTitlePost(String title) {
+        if (title.equals("")) {
+            return searchPostRepository.findAll().stream()
+                    .map(post -> PostSearchNameResponseDto.builder()
+                            .nickname(post.getMember().getNickname())
+                            .title(post.getTitle())
+                            .createDateTime(post.getCreateDateTime())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+
+        return searchPostRepository.findByTitleContaining(title).stream()
+                .map(post -> PostSearchNameResponseDto.builder()
+                        .nickname(post.getMember().getNickname())
+                        .title(post.getTitle())
+                        .createDateTime(post.getCreateDateTime())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }

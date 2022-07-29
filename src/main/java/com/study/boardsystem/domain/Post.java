@@ -1,6 +1,8 @@
 package com.study.boardsystem.domain;
 
 import com.study.boardsystem.domain.base.TimeEntity;
+import com.study.boardsystem.exception.NotFoundEntityException;
+import com.study.boardsystem.exception.code.CommonErrorCode;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +17,7 @@ import java.util.List;
  */
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Table(name = "POSTS")
 @Entity
@@ -50,7 +52,7 @@ public class Post extends TimeEntity {
 
     public void addMember(Member member) {
         if (member == null) {
-            throw new IllegalArgumentException("Member Argument Exception!!");
+            throw new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY);
         }
         this.member = member;
     }
@@ -66,7 +68,7 @@ public class Post extends TimeEntity {
 
     public void addComment(Comment comment) {
         if (comment == null) {
-            throw new IllegalArgumentException("Comment Argument Exception!!");
+            throw new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY);
         }
         this.comments.add(comment);
     }
