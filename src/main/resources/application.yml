@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 # profile
 spring:
+=======
+
+spring:
+  # profile
+>>>>>>> develop
   profiles:
     active: local
 # h2 console
