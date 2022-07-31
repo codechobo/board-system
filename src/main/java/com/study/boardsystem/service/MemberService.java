@@ -3,6 +3,7 @@ package com.study.boardsystem.service;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.MemberExistsCheckRepository;
 import com.study.boardsystem.domain.MemberRepository;
+import com.study.boardsystem.domain.type.Rank;
 import com.study.boardsystem.exception.DuplicationException;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
@@ -48,6 +49,8 @@ public class MemberService {
 
         Member member = memberSaveRequestDto.toEntity();
         member.isJoin(true);
+        member.joinRank(Rank.BASIC);
+
         memberRepository.save(member);
         return MemberSaveResponseDto.builder().member(member).build();
     }

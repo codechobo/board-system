@@ -57,8 +57,9 @@ class MemberServiceTest {
                 "test1234",
                 address);
 
+        given(memberRepository.save(any(Member.class))).willReturn(memberSaveRequestDto.toEntity());
+
         // when
-        when(memberRepository.save(any(Member.class))).thenReturn(memberSaveRequestDto.toEntity());
         MemberSaveResponseDto memberSaveResponseDto = memberService.joinMember(memberSaveRequestDto);
 
         // then
@@ -83,13 +84,10 @@ class MemberServiceTest {
                 "test1234",
                 address);
 
-        given(memberRepository.save(any(Member.class)))
-                .willReturn(memberSaveRequestDto.toEntity());
-        Member saveMember = memberRepository.save(memberSaveRequestDto.toEntity());
+        given(memberRepository.findById(any())).willReturn(Optional.of(memberSaveRequestDto.toEntity()));
 
         // when
-        when(memberRepository.findById(any())).thenReturn(Optional.of(saveMember));
-        MemberSaveResponseDto memberSaveResponseDto = memberService.findMemberById(saveMember.getId());
+        MemberSaveResponseDto memberSaveResponseDto = memberService.findMemberById(1L);
 
         // then
         assertNotNull(memberSaveResponseDto);
@@ -104,12 +102,8 @@ class MemberServiceTest {
         Member member = createMember();
         member.setId(1L);
 
-        given(memberRepository.save(member)).willReturn(member);
-        Member saveMember = memberRepository.save(member);
-
-
-        given(memberRepository.findById(saveMember.getId())).willReturn(Optional.of(member));
-        Member findMember = memberRepository.findById(saveMember.getId()).orElseThrow();
+        given(memberRepository.findById(anyLong())).willReturn(Optional.of(member));
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow();
 
         // when
         MemberUpdateRequestDto memberUpdateRequestDto = MemberUpdateRequestDto.builder()
@@ -122,8 +116,8 @@ class MemberServiceTest {
                 .updateAfterFindEntity(findMember.getId(), memberUpdateRequestDto);
 
         // then
-        assertThat(result.getNickname()).isEqualTo(saveMember.getNickname());
-        assertThat(result.getEmail()).isEqualTo(saveMember.getEmail());
+        assertThat(result.getNickname()).isEqualTo(member.getNickname());
+        assertThat(result.getEmail()).isEqualTo(member.getEmail());
     }
 
     @Test
@@ -151,7 +145,7 @@ class MemberServiceTest {
         given(memberRepository.findByEmail(anyString())).willReturn(Optional.of(member));
 
         // when
-        MemberSaveResponseDto result = memberService.findMemberByEmail(member.getEmail());
+        MemberSaveResponseDto result = memberService.findMemberByEmail("이메일");
 
         // then
         assertThat(result.getEmail()).isEqualTo(member.getEmail());
