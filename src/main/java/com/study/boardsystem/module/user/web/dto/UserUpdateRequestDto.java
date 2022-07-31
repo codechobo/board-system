@@ -1,9 +1,9 @@
 package com.study.boardsystem.module.user.web.dto;
 
+import com.study.boardsystem.module.user.domain.type.Address;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,12 +23,6 @@ public class UserUpdateRequestDto {
     @NotNull
     private String nickname;
 
-    @NotBlank
-    private String city;
-
-    @NotBlank
-    private String address1;
-
-    @NotBlank
-    private String address2;
+    @NotNull
+    private Address address;
 }

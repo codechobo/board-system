@@ -14,12 +14,12 @@ import lombok.Getter;
 @Getter
 public class PostSaveResponseDto {
 
-    private final String userName;
+    private final String userNickname;
     private final String title;
 
     @Builder
     public PostSaveResponseDto(Post post) {
-        this.userName = post.getUserNickname();
+        this.userNickname = post.getUserNickname();
         this.title = post.getTitle();
     }
 }

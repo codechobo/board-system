@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.user.web.dto;
 
+import com.study.boardsystem.module.user.domain.type.Address;
 import com.study.boardsystem.module.user.domain.User;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -36,24 +36,16 @@ public class UserSaveRequestDto {
     @Length(min = 8, max = 20, message = "8자 ~ 20자 사이의 비밀번호")
     private String password;
 
-    @NotBlank
-    private String city;
-
-    @NotBlank
-    private String address1;
-
-    @NotBlank
-    private String address2;
+    @NotNull
+    private Address address;
 
     @Builder
-    public UserSaveRequestDto(String name, String email, String nickname, String password, String city, String address1, String address2) {
+    public UserSaveRequestDto(String name, String email, String nickname, String password, Address address) {
         this.name = name;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-        this.city = city;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.address = address;
     }
 
     public User toEntity() {
@@ -62,9 +54,7 @@ public class UserSaveRequestDto {
                 .email(this.email)
                 .nickname(this.nickname)
                 .password(this.password)
-                .city(this.city)
-                .address1(this.address1)
-                .address2(this.address2)
+                .address(this.address)
                 .build();
     }
 }

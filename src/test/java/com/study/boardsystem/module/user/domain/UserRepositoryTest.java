@@ -28,9 +28,6 @@ class UserRepositoryTest {
                 .password("스폰지밥12")
                 .email("스폰지밥@naver.com")
                 .nickname("스폰지")
-                .city("서울")
-                .address1("어딘가")
-                .address2("안알려줌")
                 .build();
 
         User save = userRepository.save(user);

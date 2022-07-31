@@ -1,9 +1,11 @@
 package com.study.boardsystem.module.user.domain;
 
 import com.study.boardsystem.module.base.domain.BaseTimeEntity;
+import com.study.boardsystem.module.user.domain.type.Address;
 import lombok.*;
 
 import javax.persistence.*;
+
 
 /**
  * packageName    : com.study.boardsystem.module.post.domain
@@ -14,57 +16,55 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "USERS", uniqueConstraints = {
         @UniqueConstraint(
-            columnNames = {
-                    "nickname",
-                    "password",
-                    "email",
-                    "name"}
+                columnNames = {
+                        "NICKNAME",
+                        "PASSWORD",
+                        "EMAIL",
+                        "NAME"}
         )
 })
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(exclude = "password")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USERS_ID")
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "NICKNAME", nullable = false, length = 20)
     private String nickname;
 
     // TODO 비밀번호 인코딩 필요
-    @Column(nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "NAME", nullable = false, length = 20)
     private String name;
 
-    @Column(length = 20)
-    private String city;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "USERS_CITY")),
+            @AttributeOverride(name = "street", column = @Column(name = "USERS_STREET")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "USERS_ZIPCODE"))
+    })
+    private Address address;
 
-    @Column(length = 20)
-    private String address1;
-
-    @Column(length = 20)
-    private String address2;
-
-    @Column
+    @Column(name = "IS_JOIN")
     private boolean isJoin;
 
     @Builder
-    public User(String nickname, String password, String email, String name, String city, String address1, String address2) {
+    public User(String nickname, String password, String email, String name, Address address) {
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.name = name;
-        this.city = city;
-        this.address1 = address1;
-        this.address2 = address2;
+        this.address = address;
     }
 
     public void updateNickname(String nickname) {
@@ -75,16 +75,18 @@ public class User extends BaseTimeEntity {
         this.email = email;
     }
 
+    public void updateAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("주소를 생성할 수 없습니다.");
+        }
+        this.address = address;
+    }
+
     // TODO 비밀번호 인코딩 필요
     public void updatePassword(String password) {
         this.password = password;
     }
 
-    public void updateAddress(String city, String address1, String address2) {
-        this.city = city;
-        this.address1 = address1;
-        this.address2 = address2;
-    }
 
     public void joinCheck(boolean isJoin) {
         this.isJoin = isJoin;
@@ -95,5 +97,4 @@ public class User extends BaseTimeEntity {
             throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
         }
     }
-
 }

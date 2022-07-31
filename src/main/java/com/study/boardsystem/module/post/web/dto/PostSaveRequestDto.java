@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 public class PostSaveRequestDto {
 
     @NotNull
-    @Length(max = 20)
+    @Length(min = 1, max = 20)
     @JsonProperty("user_nickname")
     private String userNickname;
 

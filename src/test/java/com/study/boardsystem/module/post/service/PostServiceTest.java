@@ -1,11 +1,14 @@
 package com.study.boardsystem.module.post.service;
 
+import com.study.boardsystem.module.post.CreateDomain;
 import com.study.boardsystem.module.post.domain.Post;
 import com.study.boardsystem.module.post.domain.PostRepository;
 import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
 import com.study.boardsystem.module.post.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.user.domain.User;
+import com.study.boardsystem.module.user.domain.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -30,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-class PostServiceTest {
+class PostServiceTest extends CreateDomain {
 
     @Autowired
     PostService postService;
@@ -38,39 +41,48 @@ class PostServiceTest {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @BeforeEach
     public void setUp() {
-        Post post1 = PostSaveRequestDto.builder()
-                .userNickname("기영이")
-                .title("검정고무신1")
-                .description("검정고무신1 완전 재밌지~~~")
-                .build()
-                .toEntity();
+        User user = saveUser(
+                "이기영",
+                "테스트12341234",
+                "이기영@naver.com",
+                "까까머리",
+                "서울",
+                "어딘가",
+                "살겠지");
+        Post post1 = createPost("검정고무신 재밌다", "기영이가 너무 귀여워 인정?!!", user);
+        Post post2 = createPost("기철이형은 나빠!", "기철이형이 콜라를 안줘서 나빠요!", user);
 
-        Post post2 = PostSaveRequestDto.builder()
-                .userNickname("기철이")
-                .title("검정고무신2")
-                .description("검정고무신2 완전 재밌지~~~")
-                .build()
-                .toEntity();
+        postRepository.save(post1);
+        postRepository.save(post2);
 
-        postRepository.saveAll(List.of(post1, post2));
     }
 
     @AfterEach
-    public void deleteAll() {
+    public void afterEach() {
         postRepository.deleteAll();
     }
 
     @Test
     @DisplayName("게시판을 생성한다.")
     void createPost() {
-        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userNickname("기철이")
-                .title("검정고무신")
-                .description("검정고무신 완전 재밌어요~~~")
-                .build();
-        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        User user = saveUser(
+                "스폰지밥",
+                "테스트12341234",
+                "스폰지밥@naver.com",
+                "스폰지",
+                "비키니시티",
+                "어딘가",
+                "살겠지");
+
+        PostSaveRequestDto postSaveRequestDto =
+                savePost(user, "스폰지밥이 재밌나?", "스폰지밥 진짜 재밌죠");
+
+        PostSaveResponseDto dto = postService.create(user.getId(), postSaveRequestDto);
 
         assertNotNull(dto);
         assertThat(dto.getTitle()).isEqualTo(postSaveRequestDto.getTitle());
@@ -80,20 +92,29 @@ class PostServiceTest {
     @DisplayName("게시판 조회한다.")
     void findPost() {
         // given
-        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userNickname("기철이")
-                .title("검정고무신")
-                .description("검정고무신 완전 재밌어요~~~")
-                .build();
-        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        User user = saveUser(
+                "스폰지밥",
+                "테스트12341234",
+                "스폰지밥@naver.com",
+                "스폰지",
+                "비키니시티",
+                "어딘가",
+                "살겠지");
+
+        PostSaveRequestDto postSaveRequestDto =
+                savePost(user, "스폰지밥이 재밌나?", "스폰지밥 진짜 재밌죠");
 
         // when
-        List<PostFindResponseDto> result = postRepository.findByName("기철이");
+        List<PostFindResponseDto> result = postService.findByNamePosts(user.getNickname());
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getTitle()).isEqualTo(postSaveRequestDto.getTitle());
+        assertAll(
+                () -> assertThat(result).isNotNull(),
+                () -> assertThat(result)
+                        .extracting("title")
+                        .containsOnly(postSaveRequestDto.getTitle())
+        );
     }
 
     @Test
@@ -101,54 +122,84 @@ class PostServiceTest {
     void findPostList() {
         List<Post> posts = postRepository.findAll();
 
-        assertThat(posts).isNotNull();
-        assertThat(posts.size()).isEqualTo(2);
-        assertThat(posts.get(0).getUserNickname()).isEqualTo("기영이");
+        for (Post post : posts) {
+            System.out.println(post.getUserNickname());
+        }
+        assertAll(
+                () -> assertThat(posts).isNotNull(),
+                () -> assertThat(posts)
+                        .extracting("title")
+                        .containsOnly("검정고무신 재밌다", "기철이형은 나빠!")
+        );
     }
 
     @Test
     @DisplayName("게시글 삭제")
     void deletePost() {
         // given
-        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
-                .userNickname("기영 어머니")
-                .title("검정고무신")
-                .description("검정고무신 완전 재밌어요~~~")
-                .build();
-        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        User user = saveUser(
+                "스폰지밥",
+                "테스트12341234",
+                "스폰지밥@naver.com",
+                "스폰지",
+                "비키니시티",
+                "어딘가",
+                "살겠지");
+        Post post = createPost("뚱이는 귀엽다", "맞죠맞죠 뚱이 귀엽죠", user);
+        postRepository.save(post);
 
         // when
-        postService.deleteByIdPost(3L);
+        postService.deleteByPost(post.getId());
 
         // then
-        assertThatThrownBy(() -> postRepository.findById(3L)
-                .orElseThrow(() -> new IllegalArgumentException("존재 하지 않는 아이디입니다.")))
+        assertThatThrownBy(() -> postRepository.findById(post.getId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다.")))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재 하지 않는 아이디입니다.");
+                .hasMessage("존재하지 않는 게시글입니다.");
+
     }
 
     @Test
     @DisplayName("게시글 업데이트")
     void updateByIdPost() {
         // given
-        Post updateBeforeEntity = postRepository.findById(1L).get();
+        User user = saveUser(
+                "스폰지밥",
+                "테스트12341234",
+                "스폰지밥@naver.com",
+                "스폰지",
+                "비키니시티",
+                "어딘가",
+                "살겠지");
 
-        String updateBeforeTitle = updateBeforeEntity.getTitle();
-        String updateBeforeDescription = updateBeforeEntity.getDescription();
+        Post updateBeforePost = createPost("뚱이는 귀엽다", "맞죠맞죠 뚱이 귀엽죠", user);
+        String updateBeforeTitle = updateBeforePost.getTitle();
+        String updateBeforeDescription = updateBeforePost.getDescription();
+        postRepository.save(updateBeforePost);
 
         // when
         PostUpdateRequestDto postUpdateRequestDto = PostUpdateRequestDto.builder()
-                .title("스폰지밥")
-                .description("검정고무신 보단 스폰지밥이 더 재밌어!")
+                .title("뚱이는 뚱이다.")
+                .description("아니아니 아니야")
                 .build();
-        postService.updateByIdPost(1L, postUpdateRequestDto);
+        postService.updateByIdPost(updateBeforePost.getId(), postUpdateRequestDto);
 
         // then
-        Post updateAfterEntity = postRepository.findById(1L).get();
+        Post updateAfterPost = postRepository.findById(updateBeforePost.getId()).orElseThrow();
+        assertNotNull(updateAfterPost);
+        assertThat(updateAfterPost.getTitle()).isEqualTo(updateBeforePost.getTitle());
+        assertThat(updateAfterPost.getDescription()).isEqualTo(updateBeforePost.getDescription());
+    }
 
-        assertNotEquals(updateAfterEntity.getTitle(), updateBeforeTitle);
-        assertNotEquals(updateAfterEntity.getDescription(), updateBeforeDescription);
-        assertThat(updateAfterEntity.getTitle()).isEqualTo(postUpdateRequestDto.getTitle());
-        assertThat(updateAfterEntity.getDescription()).isEqualTo(postUpdateRequestDto.getDescription());
+    private User saveUser(String name, String password, String email, String nickName, String city, String street, String zipcode) {
+        User user = createUser(name, password, email, nickName, city, street, zipcode);
+        userRepository.save(user);
+        return user;
+    }
+
+    private PostSaveRequestDto savePost(User user, String title, String description) {
+        PostSaveRequestDto postSaveRequestDto = createPostSaveRequestDto(title, description);
+        PostSaveResponseDto dto = postService.create(user.getId(), postSaveRequestDto);
+        return postSaveRequestDto;
     }
 }

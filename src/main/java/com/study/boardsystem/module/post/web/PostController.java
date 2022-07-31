@@ -1,8 +1,5 @@
 package com.study.boardsystem.module.post.web;
 
-import com.study.boardsystem.module.comment.dto.CommentSaveRequestDto;
-import com.study.boardsystem.module.comment.dto.CommentSaveResponseDto;
-import com.study.boardsystem.module.comment.service.CommentService;
 import com.study.boardsystem.module.post.domain.PostRepository;
 import com.study.boardsystem.module.post.service.PostService;
 import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
@@ -11,7 +8,6 @@ import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +29,19 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
-    private final CommentService commentService;
 
-    @PostMapping("/posts")
+    @PostMapping("/{id}/posts")
     public ResponseEntity<PostSaveResponseDto> createPosts(
+            @PathVariable(name = "id") Long usersId,
             @RequestBody PostSaveRequestDto postSaveRequestDto) {
-        PostSaveResponseDto dto = postService.create(postSaveRequestDto);
+        PostSaveResponseDto dto = postService.create(usersId, postSaveRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @GetMapping("/posts/{name}")
+    @GetMapping("/posts")
     public ResponseEntity<List<PostFindResponseDto>> searchByName(
-            @Validated @PathVariable("name") String userName) {
-        List<PostFindResponseDto> dtos = postService.findByNamePosts(userName);
+            @Validated @RequestParam(name = "nickname") String userNickname) {
+        List<PostFindResponseDto> dtos = postService.findByNamePosts(userNickname);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
@@ -59,7 +55,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{id}")
     public void deletePost(@PathVariable("id") Long postId) {
-        postService.deleteByIdPost(1L);
+        postService.deleteByPost(postId);
     }
 
     @PutMapping("/posts/{id}")
@@ -71,15 +67,4 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postSaveResponseDto);
     }
 
-    @PostMapping("/posts/{id}/comments")
-    public ResponseEntity<CommentSaveResponseDto> createComment(
-            @PathVariable Long postId,
-            @RequestBody CommentSaveRequestDto commentSaveRequestDto) {
-
-        CommentSaveResponseDto commentSaveResponseDto =
-                commentService.saveComment(postId, commentSaveRequestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON).body(commentSaveResponseDto);
-    }
 }

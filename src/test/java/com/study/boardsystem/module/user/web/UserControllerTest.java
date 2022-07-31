@@ -1,6 +1,7 @@
 package com.study.boardsystem.module.user.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.boardsystem.module.user.domain.type.Address;
 import com.study.boardsystem.module.user.domain.User;
 import com.study.boardsystem.module.user.domain.UserRepository;
 import com.study.boardsystem.module.user.web.dto.UserSaveRequestDto;
@@ -162,9 +163,11 @@ class UserControllerTest {
         UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto();
         userUpdateRequestDto.setNickname("pack");
         userUpdateRequestDto.setEmail("pack@naver.com");
-        userUpdateRequestDto.setCity("서울");
-        userUpdateRequestDto.setAddress1("어딘가");
-        userUpdateRequestDto.setAddress2("단지");
+        userUpdateRequestDto.setAddress(Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("모르겠음")
+                .build());
         return userUpdateRequestDto;
     }
 
@@ -174,9 +177,11 @@ class UserControllerTest {
         userSaveRequestDto.setNickname("packman");
         userSaveRequestDto.setEmail("packman@naver.com");
         userSaveRequestDto.setPassword("hello1234");
-        userSaveRequestDto.setCity("서울");
-        userSaveRequestDto.setAddress1("어디?");
-        userSaveRequestDto.setAddress2("여기");
+        userSaveRequestDto.setAddress(Address.builder()
+                .city("서울")
+                .street("어딘가")
+                .zipcode("모르겠음")
+                .build());
         return userSaveRequestDto;
     }
 

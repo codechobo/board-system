@@ -1,5 +1,6 @@
 package com.study.boardsystem.module.user.web.dto;
 
+import com.study.boardsystem.module.user.domain.type.Address;
 import lombok.Data;
 
 /**
@@ -18,11 +19,5 @@ public class UserSaveResponseDto {
 
     private String nickname;
 
-    private String city;
-
-    private String address1;
-
-    private String address2;
-
-
+    private Address address;
 }

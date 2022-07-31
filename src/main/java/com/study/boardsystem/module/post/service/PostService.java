@@ -6,6 +6,8 @@ import com.study.boardsystem.module.post.web.dto.PostFindResponseDto;
 import com.study.boardsystem.module.post.web.dto.PostSaveRequestDto;
 import com.study.boardsystem.module.post.web.dto.PostSaveResponseDto;
 import com.study.boardsystem.module.post.web.dto.PostUpdateRequestDto;
+import com.study.boardsystem.module.user.domain.User;
+import com.study.boardsystem.module.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +26,29 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostSaveResponseDto create(PostSaveRequestDto postSaveRequestDto) {
-        Post post = postRepository.save(postSaveRequestDto.toEntity());
+    @Transactional
+    public PostSaveResponseDto create(Long usersId, PostSaveRequestDto postSaveRequestDto) {
+        User user = userRepository.findById(usersId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        Post post = Post.createPost(
+                user.getNickname(),
+                postSaveRequestDto.getTitle(),
+                postSaveRequestDto.getDescription(),
+                user);
+
+        postRepository.save(post);
         return PostSaveResponseDto.builder().post(post).build();
     }
 
-    public List<PostFindResponseDto> findByNamePosts(String userName) {
-        return postRepository.findByName(userName);
+    public List<PostFindResponseDto> findByNamePosts(String userNickname) {
+        return postRepository.findByNickname(userNickname);
     }
 
     @Transactional
-    public void deleteByIdPost(Long postId) {
+    public void deleteByPost(Long postId) {
         Post post = getEntity(postId);
         postRepository.delete(post);
     }

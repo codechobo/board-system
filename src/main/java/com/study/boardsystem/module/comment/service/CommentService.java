@@ -2,8 +2,10 @@ package com.study.boardsystem.module.comment.service;
 
 import com.study.boardsystem.module.comment.domain.Comment;
 import com.study.boardsystem.module.comment.domain.CommentRepository;
-import com.study.boardsystem.module.comment.dto.CommentSaveRequestDto;
-import com.study.boardsystem.module.comment.dto.CommentSaveResponseDto;
+import com.study.boardsystem.module.comment.web.dto.CommentSaveRequestDto;
+import com.study.boardsystem.module.comment.web.dto.CommentSaveResponseDto;
+import com.study.boardsystem.module.user.domain.User;
+import com.study.boardsystem.module.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,18 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
-    public CommentSaveResponseDto saveComment(Long postId, CommentSaveRequestDto commentSaveRequestDto) {
-        Comment comment = commentSaveRequestDto.toEntity();
-//        comment.addPostsId(postId);
+    public CommentSaveResponseDto create(CommentSaveRequestDto commentSaveRequestDto) {
+        User user = userRepository.findByNickname(commentSaveRequestDto.getUserNickname())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 닉네임입니다."));
 
-        Comment saveComment = commentRepository.save(comment);
-        return CommentSaveResponseDto.toMapper(saveComment);
+        Comment comment = Comment.builder()
+                .userNickname(user.getNickname())
+                .content(commentSaveRequestDto.getContent())
+                .build();
+
+        commentRepository.save(comment);
+        return CommentSaveResponseDto.toMapper(comment);
     }
 }
