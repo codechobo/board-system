@@ -109,9 +109,9 @@ class MemberControllerTest {
         doReturn(MemberSaveResponseDto.builder()
                 .member(memberSaveRequestDto.toEntity())
                 .build())
-                .when(memberService).findByIdEntity(1L);
+                .when(memberService).findMemberById(1L);
 
-        mockMvc.perform(get("/api/v1/members/" + 1L))
+        mockMvc.perform(get("/api/v1/members/search/" + 1L))
                 .andDo(print())
                 .andExpect(content()
                         .json(objectMapper
@@ -120,7 +120,7 @@ class MemberControllerTest {
                                         .build())))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(memberService).findByIdEntity(1L);
+        verify(memberService).findMemberById(1L);
     }
 
     @Test
@@ -155,7 +155,7 @@ class MemberControllerTest {
                 .collect(Collectors.toList());
 
         // when && then
-        mockMvc.perform(get("/api/v1/members"))
+        mockMvc.perform(get("/api/v1/members/list"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(content)))
@@ -228,5 +228,37 @@ class MemberControllerTest {
                 .andExpect(status().isOk());
 
         verify(memberService).removeMember(anyLong());
+    }
+
+    @Test
+    @DisplayName("Email 로 Member 조회한다")
+    void getMemberByEmail() throws Exception {
+        // then
+        Member member = new Member("이기철",
+                "콜라도둑",
+                "기철@naver.com",
+                "test12341234",
+                Address.builder()
+                        .city("서울")
+                        .street("어딘가")
+                        .zipcode("살겠지")
+                        .build());
+
+        MemberSaveResponseDto memberSaveResponseDto = MemberSaveResponseDto.builder()
+                .member(member)
+                .build();
+        given(memberService.findMemberByEmail(anyString())).willReturn(memberSaveResponseDto);
+
+        // when && then
+        mockMvc.perform(get("/api/v1/members/search")
+                        .queryParam("email", member.getEmail()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(memberSaveResponseDto)));
+
+        verify(memberService).findMemberByEmail(member.getEmail());
+
     }
 }

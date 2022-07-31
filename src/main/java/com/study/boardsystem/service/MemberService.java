@@ -52,7 +52,7 @@ public class MemberService {
         return MemberSaveResponseDto.builder().member(member).build();
     }
 
-    public MemberSaveResponseDto findByIdEntity(Long membersId) {
+    public MemberSaveResponseDto findMemberById(Long membersId) {
         Member member = getEntity(membersId);
         return MemberSaveResponseDto.builder().member(member).build();
     }
@@ -86,6 +86,15 @@ public class MemberService {
     public void removeMember(Long memberId) {
         Member entity = getEntity(memberId);
         memberRepository.delete(entity);
+    }
+
+    public MemberSaveResponseDto findMemberByEmail(String email) {
+        Member entity = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
+
+        return MemberSaveResponseDto.builder()
+                .member(entity)
+                .build();
     }
 
     private Member getEntity(Long membersId) {

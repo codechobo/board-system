@@ -89,7 +89,7 @@ class MemberServiceTest {
 
         // when
         when(memberRepository.findById(any())).thenReturn(Optional.of(saveMember));
-        MemberSaveResponseDto memberSaveResponseDto = memberService.findByIdEntity(saveMember.getId());
+        MemberSaveResponseDto memberSaveResponseDto = memberService.findMemberById(saveMember.getId());
 
         // then
         assertNotNull(memberSaveResponseDto);
@@ -141,8 +141,21 @@ class MemberServiceTest {
 
         // then
         verify(mock).removeMember(1L);
+    }
 
+    @Test
+    @DisplayName("Email 로 Member 조회한다.")
+    void findMemberByEmail() {
+        // given
+        Member member = createMember();
+        given(memberRepository.findByEmail(anyString())).willReturn(Optional.of(member));
 
+        // when
+        MemberSaveResponseDto result = memberService.findMemberByEmail(member.getEmail());
+
+        // then
+        assertThat(result.getEmail()).isEqualTo(member.getEmail());
+        assertThat(result.getNickname()).isEqualTo(member.getNickname());
     }
 
     private Member createMember() {
@@ -159,7 +172,6 @@ class MemberServiceTest {
                 .build();
     }
 
-
     private MemberSaveRequestDto createMemberSaveRequestDto(String name, String nickname, String email, String password, Address address) {
         return MemberSaveRequestDto.builder()
                 .name(name)
@@ -169,6 +181,4 @@ class MemberServiceTest {
                 .address(address)
                 .build();
     }
-
-
 }
