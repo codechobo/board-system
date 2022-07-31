@@ -37,29 +37,21 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberSaveResponseDto);
     }
 
-    @GetMapping("/members/search/{id}")
-    public ResponseEntity<MemberSaveResponseDto> getMemberById(
+    @GetMapping("/members/{id}")
+    public ResponseEntity<MemberSaveResponseDto> getMember(
             @PathVariable("id") Long membersId) {
-        MemberSaveResponseDto memberSaveResponseDto = memberService.findMemberById(membersId);
+        MemberSaveResponseDto memberSaveResponseDto = memberService.findByIdEntity(membersId);
         return ResponseEntity.status(HttpStatus.OK).body(memberSaveResponseDto);
     }
 
-    @GetMapping("/members/list")
+    @GetMapping("/members")
     public ResponseEntity<List<MemberSaveResponseDto>> getMembers() {
         List<Member> list = memberRepository.findAll();
-
         List<MemberSaveResponseDto> result = list.stream().map(member ->
                 MemberSaveResponseDto.builder()
                         .member(member)
                         .build()).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
-
-    @GetMapping("/members/search")
-    public ResponseEntity<MemberSaveResponseDto> getMemberByEmail(
-            @RequestParam String email) {
-        MemberSaveResponseDto memberSaveResponseDto = memberService.findMemberByEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(memberSaveResponseDto);
     }
 
     @PutMapping("/members/{id}")
@@ -73,8 +65,9 @@ public class MemberController {
     }
 
     @DeleteMapping("/members/{id}")
-    public void deleteMember(
+    public ResponseEntity deleteMember(
             @PathVariable("id") Long memberId) {
         memberService.removeMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

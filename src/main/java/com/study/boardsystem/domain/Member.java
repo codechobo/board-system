@@ -2,6 +2,7 @@ package com.study.boardsystem.domain;
 
 import com.study.boardsystem.domain.base.TimeEntity;
 import com.study.boardsystem.domain.type.Address;
+import com.study.boardsystem.domain.type.Rank;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -57,6 +58,13 @@ public class Member extends TimeEntity {
     @Column(name = "IS_JOIN")
     private boolean isJoin; // 가입 여부
 
+    // 게시판 글 5번 이상 쓰면 새싹등급에서 일반등급으로 변환
+    @Column(name = "RANK", nullable = false)
+    private Rank rank;
+
+    @Transient
+    private int writeCount; // 게시판 쓰기 횟수
+
     @Builder
     public Member(String name, String nickname, String email, String password, Address address) {
         this.name = name;
@@ -82,4 +90,12 @@ public class Member extends TimeEntity {
         this.password = password;
     }
 
+    public void joinRank(Rank rank) {
+        this.rank = rank;
+    }
+
+    public void addWriteCount() {
+        int currentWriteCount = getWriteCount();
+        this.writeCount = currentWriteCount + 1;
+    }
 }

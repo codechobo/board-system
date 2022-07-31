@@ -3,6 +3,7 @@ package com.study.boardsystem.service;
 import com.study.boardsystem.domain.Member;
 import com.study.boardsystem.domain.MemberExistsCheckRepository;
 import com.study.boardsystem.domain.MemberRepository;
+import com.study.boardsystem.domain.type.Rank;
 import com.study.boardsystem.exception.DuplicationException;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
@@ -48,11 +49,13 @@ public class MemberService {
 
         Member member = memberSaveRequestDto.toEntity();
         member.isJoin(true);
+        member.joinRank(Rank.BASIC);
+
         memberRepository.save(member);
         return MemberSaveResponseDto.builder().member(member).build();
     }
 
-    public MemberSaveResponseDto findMemberById(Long membersId) {
+    public MemberSaveResponseDto findByIdEntity(Long membersId) {
         Member member = getEntity(membersId);
         return MemberSaveResponseDto.builder().member(member).build();
     }
@@ -86,15 +89,6 @@ public class MemberService {
     public void removeMember(Long memberId) {
         Member entity = getEntity(memberId);
         memberRepository.delete(entity);
-    }
-
-    public MemberSaveResponseDto findMemberByEmail(String email) {
-        Member entity = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
-
-        return MemberSaveResponseDto.builder()
-                .member(entity)
-                .build();
     }
 
     private Member getEntity(Long membersId) {
