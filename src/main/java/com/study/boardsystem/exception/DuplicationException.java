@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class DuplicationException extends HandlerException {
+public class DuplicationException extends HandlerException{
 
     public DuplicationException(CommonErrorCode errorCode) {
         super(errorCode.getMessage(), CommonErrorCode.DUPLICATION_FIELD_VALUE);
