@@ -1,5 +1,6 @@
 package com.study.boardsystem.domain;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * date           : 2022/07/29
  */
 @Transactional(readOnly = true)
-public interface SearchPostRepository extends PostRepository {
+public interface SearchPostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p " +
             "join fetch p.member " +

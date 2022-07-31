@@ -18,7 +18,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -62,8 +63,8 @@ class PostServiceTest {
 
         Post post = Post.createPost(title, description, member);
 
-        when(memberRepository.findByNickname(anyString())).thenReturn(Optional.of(member));
-        when(postRepository.save(any())).thenReturn(post);
+        given(memberRepository.findByNickname(anyString())).willReturn(Optional.of(member));
+        given(postRepository.save(any(Post.class))).willReturn(post);
 
         // when
         PostSaveResponseDto postSaveResponseDto = postService.savePost(postSaveRequestDto);

@@ -1,5 +1,6 @@
 package com.study.boardsystem.domain;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional(readOnly = true)
-public interface MemberExistsCheckRepository extends MemberRepository {
+public interface MemberExistsCheckRepository extends JpaRepository<Member, Long> {
     boolean existsByName(String name);
     boolean existsByNickname(String nickname);
     boolean existsByEmail(String email);

@@ -1,6 +1,7 @@
 package com.study.boardsystem.service;
 
 import com.study.boardsystem.domain.*;
+import com.study.boardsystem.domain.type.Rank;
 import com.study.boardsystem.exception.NotFoundEntityException;
 import com.study.boardsystem.exception.code.CommonErrorCode;
 import com.study.boardsystem.web.dto.post_dto.*;
@@ -31,6 +32,11 @@ public class PostService {
     public PostSaveResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
         Member member = memberRepository.findByNickname(postSaveRequestDto.getNickname())
                 .orElseThrow(() -> new NotFoundEntityException(CommonErrorCode.NOT_FOUND_ENTITY));
+        member.addWriteCount();
+
+        if (member.getWriteCount() >= 5) {
+            member.joinRank(Rank.NORMAL);
+        }
 
         Post post = Post.createPost(
                 postSaveRequestDto.getTitle(),
